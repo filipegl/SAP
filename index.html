@@ -46,13 +46,15 @@
 					<td style="text-align: right;">  <button type="button" class="btn btn-info btn-xs" ng-click="adicionarFavoritos(a)">+Favoritos</button>
 				</tr>
 				<div ng-if="pesquisar && info" id="infoArtista">
-					<h3 align="center">Informações sobre:<br/> {{infoArtista.nome}}</h3>
-					<img align="center" width="150px" src="{{infoArtista.img}}" alt="Não contém imagem">
+					<h3 align="center">Informações sobre:<br/> {{infoArtista.nome}} <br/> <img align="center" width="150px" border="1px" src="{{infoArtista.img}}" alt="Não contém imagem"></h3>
+					
 					<h5>Álbuns: </h5> 
 					<h6 ng-repeat="album in infoArtista.albuns">{{album.nome}};</h6>
 					<h5> Nota do artista: {{infoArtista.nota}}</h5>
 					<h5> Última música ouvida: {{infoArtista.ultimaMusica.nome}} </h5>
+
 					<hr>
+
 					<form class="form-inline">
 					<!-- fazer regex de numero -->
 						
@@ -71,7 +73,6 @@
 				
 			</table>
 
-			
 		</div>
 	</div>
 </body>

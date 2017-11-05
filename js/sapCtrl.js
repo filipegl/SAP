@@ -72,7 +72,17 @@ angular.module("sap").controller("sapCtrl", function($scope) {
 
 	}
 
-	 	$scope.mudaNomeButtonFavoritos = function(a){
+	$scope.apenasFavoritos = function(){
+		if ($scope.ehFavorito === undefined){
+			$scope.ehFavorito = true;
+		} else {
+			$scope.ehFavorito = undefined;
+		}
+	
+		console.log($scope.ehFavorito);
+	}
+
+	 $scope.mudaNomeButtonFavoritos = function(a){
 		if (a.favorito == undefined || !a.favorito){
 			return "+ Favoritos";
 		} else {

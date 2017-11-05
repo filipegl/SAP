@@ -32,17 +32,19 @@
 				<button class="btn btn-primary" ng-click="adicionarMusica(musica, artistaDaMusica, album)" ng-disabled="!musica.nome || !artistaDaMusica || !album || !musica.ano || !musica.duracao">Adicionar Música</button>
 			</div>
 
-			
+			{{ehFavorito}}
 			<form id="pesqArtista">
+
 				<h3>Pesquise seus artistas</h3>
 
 				<input class="form-control" type="text" ng-model="pesqArtista" placeholder="Artista" style="font-style:italic; margin-left: auto; margin-right: auto">
 				 <button class="btn btn-primary" ng-click="showLista()">Pesquisar Artista</button>
 			</form>
 			<table ng-if="pesquisar" class="table">
-				<h4 id="tituloArtistas" ng-if="pesquisar" align="left">
-				</style> Artistas</h4>
-				<tr align="left" ng-repeat="a in artistas |filter: orderBy: 'nome' | filter: pesqArtista" ng-hide="artistas.favorito">
+				<h4 id="tituloArtistas" ng-if="pesquisar" align="left"
+				> Artistas</h4> 
+				<h4 id="mostrarFavoritos" ng-model="mostraFavoritos" ng-if="pesquisar" ><a href="" ng-click="apenasFavoritos()">Mostrar Favoritos</h4>
+				<tr align="left" ng-repeat="a in artistas | filter: pesqArtista | orderBy: 'nome' | filter: ehFavorito">
 					<td style="text-align: left;"><a href="" ng-click="showInfo(a)">{{a.nome}}</td></a>
 					
 					<td style="text-align: right;">  <button class="btn btn-info btn-xs" ng-class="{'btn btn-info btn-xs': !a.favorito, 'btn btn-danger btn-xs': a.favorito}" type="button" 

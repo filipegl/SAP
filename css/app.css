@@ -36,17 +36,23 @@ h1 {
 }
 #registrar {
 	width: 100px;
-	
+
 }
 #pesqArtista { 
 	margin-left: -435px;
 	margin-top: -80px;
 
 }
+#mostrarFavoritos{
+	float: left;
+	margin-top: -419px;
+	margin-left: 250px;
+}
 #tituloArtistas{
-	margin-left: 180px;
+	margin-left: 100px;
 	margin-top:10px;
 	margin-bottom: 400px;
+	white-space: nowrap;
 }
 #infoArtista{
 	/*background-image: url("caixaDeTexto.png");

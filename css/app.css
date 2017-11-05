@@ -1,0 +1,76 @@
+body {
+	background-color: #000000;
+	color: black;
+}
+
+h1 {
+	/*colocar fonte*/
+    text-align: center;
+    margin-top: 60px;
+    color: white;
+}
+
+.table{
+	width: 300px;
+	border-collapse: collapse;
+	border: 1px;
+    margin-left: 90px;
+    margin-top: -390px;
+    float: left;
+
+}
+
+
+.jumbotron {
+	width: 900px;
+	text-align: center;
+	margin-top: 50px;
+	margin-left: auto;
+	margin-right: auto;
+}
+#nota {
+	width: 40px;
+}
+#registrar {
+	width: 100px;
+}
+#pesqArtista { 
+	margin-left: -435px;
+	margin-top: -80px;
+
+}
+#tituloArtistas{
+	margin-left: 180px;
+	margin-top:10px;
+	margin-bottom: 400px;
+}
+#infoArtista{
+	/*background-image: url("caixaDeTexto.png");
+    background-repeat: no-repeat;*/
+	float: right;
+	text-align: left;
+	margin-top: -440px;
+    margin-right: 120px;
+}
+#formArtista { 
+	margin-left: 80px;
+	width: 300px;
+	margin-top: -20px;
+
+}
+#formMusica { 
+	margin-left: 500px;
+	width: 300px;
+	margin-top: -183px;
+
+
+}
+.form-control {
+	width: 300px;
+	margin-bottom: 2px;
+}
+.btn-primary {
+	width: 300px;
+	margin-bottom: 20px;
+
+}

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html ng-app="sap">
+<head>
+	<meta charset="UTF-8">
+	<title>Sistema de Áudio Personalisado</title>
+	<link rel="stylesheet" type="text/css" href="lib/bootstrap/css/bootstrap.css">
+	<link rel="stylesheet" type="text/css" href="css/app.css">
+	<script src="lib/angular/angular.js"></script>
+	<script src="js/app.js"></script>
+	<script src="js/sapCtrl.js"></script>
+</head>
+
+<body>
+	<div ng-controller="sapCtrl">
+		<h1> {{app}} </h1>
+		<div class="jumbotron"> 
+			<div id="formArtista">
+				<h3> Adicione seus artistas</h3>
+				<input class="form-control" type="text" ng-model="artista.nome" placeholder="Artista" style="font-style:italic">
+				<input class="form-control" type="text" ng-model="artista.img" placeholder="Link da imagem" style="font-style:italic">
+				<button class="btn btn-primary" ng-click="adicionarArtista(artista)" ng-disabled="!artista.nome">Adicionar Artista</button>
+			</div>
+
+			<div id="formMusica">
+				<h3> Adicione suas músicas</h3>
+				<input class="form-control" type="text" ng-model="musica.nome" placeholder="Nome" style="font-style:italic" >
+				<input class="form-control" type="text" ng-model="artistaDaMusica" placeholder="Artista" style="font-style:italic">
+				<input class="form-control" type="text" ng-model="album" placeholder="Álbum" style="font-style:italic">
+				<input class="form-control" type="text" ng-model="musica.ano" placeholder="Ano de lançamento" style="font-style:italic">
+				<input class="form-control" type="text" ng-model="musica.duracao" placeholder="Duração" style="font-style:italic">
+				<button class="btn btn-primary" ng-click="adicionarMusica(musica, artistaDaMusica, album)" ng-disabled="!musica.nome || !artistaDaMusica || !album || !musica.ano || !musica.duracao">Adicionar Música</button>
+			</div>
+
+			
+			<form id="pesqArtista">
+				<h3>Pesquise seus artistas</h3>
+
+				<input class="form-control" type="text" ng-model="pesqArtista" placeholder="Artista" style="font-style:italic; margin-left: auto; margin-right: auto">
+				 <button class="btn btn-primary" ng-click="showLista()">Pesquisar Artista</button>
+			</form>
+			<table ng-if="pesquisar" class="table">
+				<h4 id="tituloArtistas" ng-if="pesquisar" align="left">
+				</style> Artistas</h4>
+				<tr align="left" ng-repeat="a in artistas |filter: orderBy: 'nome' | filter: pesqArtista">
+					<td style="text-align: left;"><a href="" ng-click="showInfo(a)">{{a.nome}}</td></a>
+					<td style="text-align: right;">  <button type="button" class="btn btn-info btn-xs" ng-click="adicionarFavoritos(a)">+Favoritos</button>
+				</tr>
+				<div ng-if="pesquisar && info" id="infoArtista">
+					<h3 align="center">Informações sobre:<br/> {{infoArtista.nome}}</h3>
+					<img align="center" width="150px" src="{{infoArtista.img}}" alt="Não contém imagem">
+					<h5>Álbuns: </h5> 
+					<h6 ng-repeat="album in infoArtista.albuns">{{album.nome}};</h6>
+					<h5> Nota do artista: {{infoArtista.nota}}</h5>
+					<h5> Última música ouvida: {{infoArtista.ultimaMusica.nome}} </h5>
+					<hr>
+					<form class="form-inline">
+					<!-- fazer regex de numero -->
+						
+						<h5> Nota do artista: 
+						<select id="nota" ng-model="nota" ng-options="nota for nota in notas">
+						<option value=""></option>
+						</select></h5>
+					
+						<select id="UltimaMusica" class="form-control" ng-model="musica" ng-options="musica.nome group by musica.album for musica in infoArtista.musicas">
+						<option value="">Selecione a ultima música ouvida</option>
+						</select>
+						<button id="registrar" ng-click="registraNotaEMusica(nota, musica, a)">Registrar</button>
+
+					</form>
+				</div>
+				
+			</table>
+
+			
+		</div>
+	</div>
+</body>
+</html>

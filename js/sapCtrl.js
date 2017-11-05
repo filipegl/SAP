@@ -6,6 +6,7 @@ angular.module("sap").controller("sapCtrl", function($scope) {
 	$scope.notas = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 	albunsDoArtista=[];
 	var musicasDoArtista=[];
+	$scope.nomeButtonFavoritos = "+ Favoritos"
 	//album = [{nome: "", musicas: [{nome: "", ano: 000, dur: ""]}, artista: ""}]
 	
 // RETORNAR O ARRAY AO EM getListaAlbuns e GetMusicas
@@ -21,25 +22,25 @@ angular.module("sap").controller("sapCtrl", function($scope) {
 	}
 
 	$scope.registraNotaEMusica = function (nota, musica, a){
-
-
 		if (nota){
 			getArtista().nota = nota;
 		}
 		if (musica){
 			var m = getObjMusica(musica);
 			getArtista().ultimaMusica = m;
-
 		}
 		
 		$scope.info = !$scope.info
 	}
+
 	var getArtista = function(){
 		arrNomeArtistas = $scope.artistas.map(function(e) { return angular.lowercase(e.nome); });
 		var index = arrNomeArtistas.indexOf($scope.infoArtista.nome);
 
 		return $scope.artistas[index];
 	}
+
+
 
 	var getObjMusica = function(musica){
 
@@ -71,8 +72,34 @@ angular.module("sap").controller("sapCtrl", function($scope) {
 
 	}
 
-	$scope.adicionarFavoritos = function(a){
+	 	$scope.mudaNomeButtonFavoritos = function(a){
+		if (a.favorito == undefined || !a.favorito){
+			return "+ Favoritos";
+		} else {
+			return "- Favoritos";
+		}
+	}
 
+	$scope.mudaFavoritos = function (a){
+		if (a.favorito == undefined || !a.favorito){
+			adicionarFavoritos(a);
+		}else{
+			var result = confirm("Deseja realmente excluir "+a.nome+" da lista de favoritos?");
+			if (result){
+				removeFavoritos(a);
+
+			}
+		}
+	}
+
+	var adicionarFavoritos = function(a){
+		var index = $scope.artistas.indexOf(a);
+		$scope.artistas[index].favorito = true;
+	}
+
+	var removeFavoritos = function(a){
+		var index = $scope.artistas.indexOf(a);
+		$scope.artistas[index].favorito = false;
 	}
 
 	$scope.adicionarArtista = function(artista) {
@@ -134,7 +161,7 @@ angular.module("sap").controller("sapCtrl", function($scope) {
 			return false;
 		}
 	}
-	// fazer
+
 	var existeMusicaNoAlbum = function (musicasDoAlbum, musica) {
 		pos = musicasDoAlbum.map(function(e) { return angular.lowercase(e.nome); });
 		if (pos.indexOf(angular.lowercase(musica.nome)) != -1){

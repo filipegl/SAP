@@ -16,6 +16,7 @@
 		<div class="jumbotron"> 
 			<div id="formArtista">
 				<h3> Adicione seus artistas</h3>
+				{{artistas}}
 				<input class="form-control" type="text" ng-model="artista.nome" placeholder="Artista" style="font-style:italic">
 				<input class="form-control" type="text" ng-model="artista.img" placeholder="Link da imagem" style="font-style:italic">
 				<button class="btn btn-primary" ng-click="adicionarArtista(artista)" ng-disabled="!artista.nome">Adicionar Artista</button>
@@ -41,9 +42,11 @@
 			<table ng-if="pesquisar" class="table">
 				<h4 id="tituloArtistas" ng-if="pesquisar" align="left">
 				</style> Artistas</h4>
-				<tr align="left" ng-repeat="a in artistas |filter: orderBy: 'nome' | filter: pesqArtista">
+				<tr align="left" ng-repeat="a in artistas |filter: orderBy: 'nome' | filter: pesqArtista" ng-hide="artistas.favorito">
 					<td style="text-align: left;"><a href="" ng-click="showInfo(a)">{{a.nome}}</td></a>
-					<td style="text-align: right;">  <button type="button" class="btn btn-info btn-xs" ng-click="adicionarFavoritos(a)">+Favoritos</button>
+					
+					<td style="text-align: right;">  <button class="btn btn-info btn-xs" ng-class="{'btn btn-info btn-xs': !a.favorito, 'btn btn-danger btn-xs': a.favorito}" type="button" 
+					 ng-click="mudaFavoritos(a);">{{mudaNomeButtonFavoritos(a)}}</button>
 				</tr>
 				<div ng-if="pesquisar && info" id="infoArtista">
 					<h3 align="center">Informações sobre:<br/> {{infoArtista.nome}} <br/> <img align="center" width="150px" border="1px" src="{{infoArtista.img}}" alt="Não contém imagem"></h3>
@@ -74,6 +77,10 @@
 			</table>
 
 		</div>
+		<!-- Em cada linha da tabela haverá um ng-hide"!$scope.artistas.favorito & fav" 
+		A variavel fav vai ser um false. Ao clicar no botão favoritos
+		fav vai ser true.-->
 	</div>
+
 </body>
 </html>

@@ -4,17 +4,70 @@ angular.module("sap").controller("sapCtrl", function($scope) {
 	$scope.albuns=[];
 	$scope.favoritos=[];
 	$scope.notas = [10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0];
-	$scope.nomeButtonFavoritos = "+ Favoritos";
+	$scope.playlists=[];
+	// $scope.nomeButtonFavoritos = "+ Favoritos";
 	//album = [{nome: "", musicas: [{nome: "", ano: 000, dur: ""]}, artista: ""}]
 	
+	$scope.adicionarPlaylist = function (playlist){
+
+		if (indexDaPlaylist(playlist) != -1){
+			alert("Playlist já existe no sistema");
+		} else {
+			playlist.musicas = [];
+			$scope.playlists.push(angular.copy(playlist));
+		}
+
+
+		delete $scope.playlist;
+
+	}
 
 	$scope.showLista = function(){
 		$scope.pesquisar = !$scope.pesquisar
 	}
 
+	$scope.showInfoPlaylist = function(playlist){	
+		$scope.boolInfoPlaylist = !$scope.boolInfoPlaylist
+		$scope.infoPlaylist = playlist;
+		console.log($scope.infoPlaylist);
+	}
+	$scope.excluirPlaylist = function(playlist){
+		var excluir = confirm("Deseja realmente excluir "+playlist.nome+"?");
+		if (excluir){
+			var index = indexDaPlaylist(playlist);
+			$scope.playlists.splice(index, 1);	
+		}
+		
+	}
+	$scope.excluirMusicaPlaylist = function(musica){
+		var index = indexDaPlaylist($scope.infoPlaylist);
+		$scope.playlists[index].musicas.splice(index, 1);
+	}
 
-	$scope.showInfo = function(a){	
-		$scope.info = !$scope.info
+
+	//INTERLIGAR INDEX.HTML COM PLAYLIST.HTML
+	$scope.adicionarMusicaPlaylist = function (musica){
+		// var mus = getMusicaPorNome(musica);
+		//  if (mus === undefined){
+		//  	alert("Musica não registrada no sistema");
+		// } else {
+		// 		$scope.infoPLaylist.musicas.push(mus);
+		// }
+		var index = indexDaPlaylist($scope.infoPlaylist);
+		$scope.playlists[index].musicas.push(angular.copy(musica));
+		delete $scope.musica;
+		$scope.infoPlaylist.musicas = $scope.playlists[index].musicas
+
+	}
+
+
+	var indexDaPlaylist = function(playlist){
+		var arrNomePlaylists = $scope.playlists.map(function(e) { return angular.lowercase(e.nome); });
+		return arrNomePlaylists.indexOf(angular.lowercase(playlist.nome));
+	}
+
+	$scope.showInfoArtista = function(a){	
+		$scope.boolInfoArtista = !$scope.boolInfoArtista;
 
 		var albunsDoArtista = getListaAlbuns(a);
 		var musicasDoArtista = getMusicas(albunsDoArtista);
@@ -26,7 +79,7 @@ angular.module("sap").controller("sapCtrl", function($scope) {
 			getArtista().nota = nota;
 		}
 		if (musica){
-			getArtista().ultimaMusica = getObjMusica(musica);
+			getArtista().ultimaMusica = getMusica(musica);
 		}
 		
 		$scope.info = !$scope.info
@@ -42,7 +95,18 @@ angular.module("sap").controller("sapCtrl", function($scope) {
 
 // ia = index do album
 // im = index da musica
-	var getObjMusica = function(musica){
+	var getMusicaPorNome = function(musica){
+		for (var ia = 0; ia < $scope.albuns.length; ia++){
+			for (var im = 0; im < $scope.albuns[ia].musicas.length; im++){
+				if($scope.albuns[ia].musicas[im].nome == musica.nome){
+					return $scope.albuns[ia].musicas[im];
+				}
+			}
+		}
+
+		return undefined;
+	}
+	var getMusica = function(musica){
 		for (var ia = 0; ia < $scope.albuns.length; ia++){
 			if($scope.albuns[ia].nome == musica.album){
 

@@ -9,11 +9,19 @@
 	<script src="js/app.js"></script>
 	<script src="js/sapCtrl.js"></script>
 </head>
-
+<!-- No meu navbar playlist botton -> glyphicon glyphicon-list -->
 <body>
 	<div ng-controller="sapCtrl">
 		<h1> {{app}} </h1>
+		<nav class="navbar navbar-inverse">
+			<ul class="nav navbar-nav">
+				<li><a href="index.html">Página Inicial</a></li>
+				<li><a href="playlist.html">Playlist</a></li>
+			</ul>
+		</nav>
 		<div class="jumbotron"> 
+
+
 			<div id="formArtista">
 				<h3> Adicione seus artistas</h3>
 				<input class="form-control" type="text" ng-model="artista.nome" placeholder="Artista" style="font-style:italic">
@@ -32,25 +40,27 @@
 			</div>
 
 			<form id="pesqArtista">
-
 				<h3>Pesquise seus artistas</h3>
 
 				<input class="form-control" type="text" ng-model="pesqArtista" placeholder="Artista" style="font-style:italic; margin-left: auto; margin-right: auto">
 				 <button class="btn btn-primary" ng-click="showLista()">Pesquisar Artista</button>
 			</form>
-			<table ng-if="pesquisar" class="table">
+
+
+			<table id="tableArtista" ng-if="pesquisar" class="table">
 				<h4 id="tituloArtistas" ng-if="pesquisar" align="left"
 				> Artistas</h4> 
 				<h4 id="mostrarFavoritos" ng-if="pesquisar" ><a href="" ng-click="filtraFavoritos()">Mostrar Favoritos</h4>
 
 				<tr align="left" ng-repeat="a in artistas | filter: pesqArtista | orderBy: 'nome' | filter: ehFavorito">
-					<td style="text-align: left;"><a href="" ng-click="showInfo(a)">{{a.nome}}</td></a>
+					<td style="text-align: left;"><a href="" ng-click="showInfoArtista(a)">{{a.nome}}</td></a>
 					
 					<td style="text-align: right;">  <button class="btn btn-info btn-xs" ng-class="{'btn btn-info btn-xs': !a.favorito, 'btn btn-danger btn-xs': a.favorito}" type="button" 
 					 ng-click="mudaFavoritos(a);">{{mudaNomeButtonFavoritos(a)}}</button>
+					</td>
 				</tr>
-				
-				<div ng-if="pesquisar && info" id="infoArtista">
+
+				<div ng-if="pesquisar && boolInfoArtista" id="infoArtista">
 					<h3 align="center">Informações sobre:<br/> {{infoArtista.nome}} <br/> <img align="center" width="150px" border="1px" src="{{infoArtista.img}}" alt="Não contém imagem"></h3>
 					
 					<h5>Álbuns: </h5> 
@@ -75,6 +85,7 @@
 					</form>
 				</div>
 			</table>
+			{{albuns}}
 		</div>
 	</div>
 

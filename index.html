@@ -16,7 +16,6 @@
 		<div class="jumbotron"> 
 			<div id="formArtista">
 				<h3> Adicione seus artistas</h3>
-				{{artistas}}
 				<input class="form-control" type="text" ng-model="artista.nome" placeholder="Artista" style="font-style:italic">
 				<input class="form-control" type="text" ng-model="artista.img" placeholder="Link da imagem" style="font-style:italic">
 				<button class="btn btn-primary" ng-click="adicionarArtista(artista)" ng-disabled="!artista.nome">Adicionar Artista</button>
@@ -32,7 +31,6 @@
 				<button class="btn btn-primary" ng-click="adicionarMusica(musica, artistaDaMusica, album)" ng-disabled="!musica.nome || !artistaDaMusica || !album || !musica.ano || !musica.duracao">Adicionar Música</button>
 			</div>
 
-			{{ehFavorito}}
 			<form id="pesqArtista">
 
 				<h3>Pesquise seus artistas</h3>
@@ -43,13 +41,15 @@
 			<table ng-if="pesquisar" class="table">
 				<h4 id="tituloArtistas" ng-if="pesquisar" align="left"
 				> Artistas</h4> 
-				<h4 id="mostrarFavoritos" ng-model="mostraFavoritos" ng-if="pesquisar" ><a href="" ng-click="apenasFavoritos()">Mostrar Favoritos</h4>
+				<h4 id="mostrarFavoritos" ng-if="pesquisar" ><a href="" ng-click="filtraFavoritos()">Mostrar Favoritos</h4>
+
 				<tr align="left" ng-repeat="a in artistas | filter: pesqArtista | orderBy: 'nome' | filter: ehFavorito">
 					<td style="text-align: left;"><a href="" ng-click="showInfo(a)">{{a.nome}}</td></a>
 					
 					<td style="text-align: right;">  <button class="btn btn-info btn-xs" ng-class="{'btn btn-info btn-xs': !a.favorito, 'btn btn-danger btn-xs': a.favorito}" type="button" 
 					 ng-click="mudaFavoritos(a);">{{mudaNomeButtonFavoritos(a)}}</button>
 				</tr>
+				
 				<div ng-if="pesquisar && info" id="infoArtista">
 					<h3 align="center">Informações sobre:<br/> {{infoArtista.nome}} <br/> <img align="center" width="150px" border="1px" src="{{infoArtista.img}}" alt="Não contém imagem"></h3>
 					
@@ -58,11 +58,10 @@
 					<h5> Nota do artista: {{infoArtista.nota}}</h5>
 					<h5> Última música ouvida: {{infoArtista.ultimaMusica.nome}} </h5>
 
+					<!-- ver essa linha -->
 					<hr>
 
-					<form class="form-inline">
-					<!-- fazer regex de numero -->
-						
+					<form class="form-inline">						
 						<h5> Nota do artista: 
 						<select id="nota" ng-model="nota" ng-options="nota for nota in notas">
 						<option value=""></option>
@@ -75,13 +74,8 @@
 
 					</form>
 				</div>
-				
 			</table>
-
 		</div>
-		<!-- Em cada linha da tabela haverá um ng-hide"!$scope.artistas.favorito & fav" 
-		A variavel fav vai ser um false. Ao clicar no botão favoritos
-		fav vai ser true.-->
 	</div>
 
 </body>

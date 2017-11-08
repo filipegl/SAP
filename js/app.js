@@ -1,1 +1,1 @@
-angular.module("sap", []);
+var app = angular.module("sap", ["ngStorage"]);

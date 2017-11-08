@@ -8,6 +8,7 @@
 	<script src="lib/angular/angular.js"></script>
 	<script src="js/app.js"></script>
 	<script src="js/sapCtrl.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/ngStorage/0.3.11/ngStorage.min.js"></script>
 </head>
 <body>
 	<div ng-controller="sapCtrl">
@@ -24,29 +25,30 @@
 			<button class="btn btn-primary" ng-click="adicionarPlaylist(playlist)" ng-disabled="!playlist.nome">Criar Playlist</button>
 
 			<table id="tablePlaylist" class="table">
-				<h4 id="tituloPlaylist"  align="left"
-				> Playlists</h4> 
+				<h3 id="tituloPlaylist"  align="left"
+				> Playlists</h3> 
 
 				<tr align="left" ng-repeat="playlist in playlists | orderBy: 'nome'">
 					<td style="text-align: left;"><a href="" ng-click="showInfoPlaylist(playlist)">{{playlist.nome}}</td></a>
+
 					
 					<td style="text-align: right;">  <button class="btn btn-danger btn-xs" type="button" 
 					 ng-click="excluirPlaylist(playlist);">excluir</button></td>
 
 				</tr>
+
 			</table>
-			<div ng-if="boolInfoPlaylist" id="infoPlaylist">
+			<div id="infoPlaylist" ng-show="boolInfoPlaylist" >
 					<h3 align="center"><br/> {{infoPlaylist.nome}} <br/></h3>
 					<h5><b>Musicas: </b></h5> 
 					
 					<table id="tableMusicasPlaylist" class="table"> 
 
 						<tr align="right" ng-repeat="musica in infoPlaylist.musicas | orderBy: 'nome'">
-							<td style="text-align: left;"><a href="" ng-click="showInfoPlaylist(playlist)">{{musica.nome}}</td></a>
+							<td style="text-align: left;">{{musica.nome}}</td></a>
 					
 							<td style="text-align: right;">  <button class="btn btn-danger btn-xs" type="button" 
 					 ng-click="excluirMusicaPlaylist(musica);">excluir</button></td>
-
 				</tr>
 			</table>
 
@@ -54,14 +56,12 @@
 					<hr>
 
 					<form id="formMusicaEmPlaylist">						
-						
-						<input class="form-control" type="text" ng-model="musica.nome" placeholder="Música" style="font-style:italic; margin-left: auto; margin-right: auto">
-						<button class="btn btn-primary" ng-click="adicionarMusicaPlaylist(musica)" ng-disabled="!musica.nome">Adicionar Musica</button>
+						<input class="form-control" type="text" ng-model="musicaDaPlaylist.nome" placeholder="Música" style="font-style:italic; margin-left: auto; margin-right: auto">
+						<button class="btn btn-primary" ng-click="adicionarMusicaPlaylist(musicaDaPlaylist)" ng-disabled="!musicaDaPlaylist.nome">Adicionar Música</button>
 
 					</form>
 				</div>
-			{{playlists}}
-			{{albuns}}
+
 	</div>
 </body>
 </html>

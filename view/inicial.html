@@ -5,7 +5,7 @@
 			<h3> Adicione seus artistas</h3>
 			<input class="form-control" type="text" ng-model="artista.nome" placeholder="Artista" style="font-style:italic">
 			<input class="form-control" type="text" ng-model="artista.img" placeholder="Link da imagem" style="font-style:italic">
-			<button class="btn btn-primary" ng-click="adicionarArtista(artista)" ng-disabled="!artista.nome">Adicionar Artista</button>
+			<button class="btn btn-default" ng-click="adicionarArtista(artista)" ng-disabled="!artista.nome">Adicionar Artista</button>
 		</div>
 
 		<div id="formMusica">
@@ -15,14 +15,14 @@
 			<input class="form-control" type="text" ng-model="album" placeholder="Álbum" style="font-style:italic">
 			<input class="form-control" type="text" ng-model="novaMusica.ano" placeholder="Ano de lançamento" style="font-style:italic">
 			<input class="form-control" type="text" ng-model="novaMusica.duracao" placeholder="Duração" style="font-style:italic">
-			<button class="btn btn-primary" ng-click="adicionarMusica(novaMusica, artistaDaMusica, album)" ng-disabled="!novaMusica.nome || !artistaDaMusica || !album || !novaMusica.ano || !novaMusica.duracao">Adicionar Música</button>
+			<button class="btn btn-default" ng-click="adicionarMusica(novaMusica, artistaDaMusica, album)" ng-disabled="!novaMusica.nome || !artistaDaMusica || !album || !novaMusica.ano || !novaMusica.duracao">Adicionar Música</button>
 		</div>
 
 		<form id="pesqArtista">
 			<h3>Pesquise seus artistas</h3>
 
 			<input class="form-control" type="text" ng-model="pesqArtista" placeholder="Artista" style="font-style:italic; margin-left: auto; margin-right: auto">
-			 <button class="btn btn-primary" ng-click="showArtistas()">Pesquisar Artista</button>
+			 <button class="btn btn-default" ng-click="showArtistas()">Pesquisar Artista</button>
 		</form>
 
 
@@ -39,7 +39,9 @@
 				</td>
 			</tr>
 
-			<div ng-show="pesquisar && boolInfoArtista" id="infoArtista">
+			
+		</table>
+		<div ng-show="pesquisar && boolInfoArtista" id="infoArtista">
 				<h3 align="center">Informações sobre<br/> {{infoArtista.nome}}: <br/> </h3><img style="margin-left: 80px;"align="center" width="150px" border="1px" src="{{infoArtista.img}}" alt="Não contém imagem">
 				
 				<h5>Álbuns: </h5> 
@@ -62,6 +64,5 @@
 					<button id="registrar" ng-disabled="!musica && !nota" ng-click="registraNotaEMusica(nota, musica)">Registrar</button>
 				</form>
 			</div>
-		</table>
 	</div>
 </div>

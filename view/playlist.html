@@ -2,7 +2,7 @@
 	<div class="jumbotron"> 
 		<h3 style="margin-top: -10px;">Crie suas playlists</h3>
 		<input id="formPlaylist" class="form-control" type="text" ng-model="playlist.nome" placeholder="Playlist" style="font-style:italic">
-		<button class="btn btn-primary" ng-click="adicionarPlaylist(playlist)" ng-disabled="!playlist.nome">Criar Playlist</button>
+		<button class="btn btn-default" ng-click="adicionarPlaylist(playlist)" ng-disabled="!playlist.nome">Criar Playlist</button>
 
 		<table id="tablePlaylist" class="table">
 			<h3 id="tituloPlaylist"  align="left"
@@ -31,13 +31,10 @@
 			 ng-click="excluirMusicaPlaylist(musica);">excluir</button></td>
 				</tr>
 			</table>
-
-			<!-- ver essa linha -->
 			<hr>
-
 			<form id="formMusicaEmPlaylist">						
 				<input class="form-control" type="text" ng-model="musicaDaPlaylist.nome" placeholder="Música" style="font-style:italic; margin-left: auto; margin-right: auto">
-				<button class="btn btn-primary" ng-click="adicionarMusicaPlaylist(musicaDaPlaylist)" ng-disabled="!musicaDaPlaylist.nome">Adicionar Música</button>
+				<button class="btn btn-default" ng-click="adicionarMusicaPlaylist(musicaDaPlaylist)" ng-disabled="!musicaDaPlaylist.nome">Adicionar Música</button>
 
 			</form>
 		</div>

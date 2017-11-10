@@ -20,19 +20,19 @@
 		</table>
 		<div id="infoPlaylist" ng-show="boolInfoPlaylist" >
 			<h3 align="center"><br/> {{infoPlaylist.nome}} <br/></h3>
-			<h5><b>Musicas: </b></h5> 
+			<h5 style="color: black"><b>Musicas: </b></h5> 
 			
-			<table id="tableMusicasPlaylist" class="table"> 
+			<table class="table"> 
 
 				<tr align="right" ng-repeat="musica in infoPlaylist.musicas | orderBy: 'nome'">
-					<td style="text-align: left;">{{musica.nome}}</td></a>
+					<td style="text-align: left; text-shadow: 0px 0px black">{{musica.nome}}</td></a>
 			
 					<td style="text-align: right;">  <button class="btn btn-danger btn-xs" type="button" 
 			 ng-click="excluirMusicaPlaylist(musica);">excluir</button></td>
 				</tr>
 			</table>
 			<hr>
-			<form id="formMusicaEmPlaylist">						
+			<form>						
 				<input class="form-control" type="text" ng-model="musicaDaPlaylist.nome" placeholder="Música" style="font-style:italic; margin-left: auto; margin-right: auto">
 				<button class="btn btn-default" ng-click="adicionarMusicaPlaylist(musicaDaPlaylist)" ng-disabled="!musicaDaPlaylist.nome">Adicionar Música</button>
 

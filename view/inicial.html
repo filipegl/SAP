@@ -1,0 +1,69 @@
+<div>
+
+
+	<div class="jumbotron"> 
+
+		<div id="formArtista">
+			<h3> Adicione seus artistas</h3>
+			<input class="form-control" type="text" ng-model="artista.nome" placeholder="Artista" style="font-style:italic">
+			<input class="form-control" type="text" ng-model="artista.img" placeholder="Link da imagem" style="font-style:italic">
+			<button class="btn btn-primary" ng-click="adicionarArtista(artista)" ng-disabled="!artista.nome">Adicionar Artista</button>
+		</div>
+
+		<div id="formMusica">
+			<h3> Adicione suas músicas</h3>
+			<input class="form-control" type="text" ng-model="novaMusica.nome" placeholder="Nome" style="font-style:italic" >
+			<input class="form-control" type="text" ng-model="artistaDaMusica" placeholder="Artista" style="font-style:italic">
+			<input class="form-control" type="text" ng-model="album" placeholder="Álbum" style="font-style:italic">
+			<input class="form-control" type="text" ng-model="novaMusica.ano" placeholder="Ano de lançamento" style="font-style:italic">
+			<input class="form-control" type="text" ng-model="novaMusica.duracao" placeholder="Duração" style="font-style:italic">
+			<button class="btn btn-primary" ng-click="adicionarMusica(novaMusica, artistaDaMusica, album)" ng-disabled="!novaMusica.nome || !artistaDaMusica || !album || !novaMusica.ano || !novaMusica.duracao">Adicionar Música</button>
+		</div>
+
+		<form id="pesqArtista">
+			<h3>Pesquise seus artistas</h3>
+
+			<input class="form-control" type="text" ng-model="pesqArtista" placeholder="Artista" style="font-style:italic; margin-left: auto; margin-right: auto">
+			 <button class="btn btn-primary" ng-click="showArtistas()">Pesquisar Artista</button>
+		</form>
+
+
+		<table id="tableArtista" ng-if="pesquisar" class="table">
+			<h4 id="tituloArtistas" ng-if="pesquisar" align="left"
+			> Artistas</h4> 
+			<h4 id="mostrarFavoritos" ng-if="pesquisar" ><a href="" ng-click="filtraFavoritos()">Mostrar Favoritos</h4>
+
+			<tr align="left" ng-repeat="artista in artistas | filter: pesqArtista | orderBy: 'nome' | filter: ehFavorito">
+				<td style="text-align: left;"><a href="" ng-click="showInfoArtista(artista)">{{artista.nome}}</td></a>
+				
+				<td style="text-align: right;">  <button class="btn btn-info btn-xs" ng-class="{'btn btn-info btn-xs': !a.favorito, 'btn btn-danger btn-xs': artista.favorito}" type="button" 
+				 ng-click="mudaFavoritos(artista);">{{mudaNomeButtonFavoritos(artista)}}</button>
+				</td>
+			</tr>
+
+			<div ng-show="pesquisar && boolInfoArtista" id="infoArtista">
+				<h3 align="center">Informações sobre<br/> {{infoArtista.nome}}: <br/> </h3><img style="margin-left: 80px;"align="center" width="150px" border="1px" src="{{infoArtista.img}}" alt="Não contém imagem">
+				
+				<h5>Álbuns: </h5> 
+				<h6 ng-repeat="album in infoArtista.albuns">{{album.nome}};</h6>
+				<h5> Nota do artista: {{infoArtista.nota}}</h5>
+				<h5> Última música ouvida: {{infoArtista.ultimaMusica.nome}} </h5>
+
+				<!-- ver essa linha -->
+				<hr>
+
+				<form class="form-inline">						
+					<h5> Nota do artista: 
+					<select id="nota" ng-model="nota" ng-options="nota for nota in notas">
+					<option value="">--</option>
+					</select></h5>
+				
+					<select id="UltimaMusica" class="form-control" ng-model="musica" ng-options="musica.nome group by musica.album for musica in infoArtista.musicas">
+					<option value="">Selecione a ultima música ouvida</option>
+					</select>
+					<button id="registrar" ng-disabled="!musica && !nota" ng-click="registraNotaEMusica(nota, musica)">Registrar</button>
+				</form>
+			</div>
+		</table>
+	</div>
+</div>

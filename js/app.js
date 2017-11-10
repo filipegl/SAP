@@ -1,2 +1,2 @@
-var app = angular.module("sap", ['ui.router', 'ngRoute']);
+var app = angular.module("sap", ['ngRoute']);
 

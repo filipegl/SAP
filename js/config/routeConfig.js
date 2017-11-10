@@ -5,7 +5,7 @@ app.config(function ($routeProvider){
 	});
 	$routeProvider.when("/playlists", {
 		templateUrl: 'view/playlist.html',
-		controller: "sapCtrl"
+		controller: "playlistCtrl"
 	});
 
 });

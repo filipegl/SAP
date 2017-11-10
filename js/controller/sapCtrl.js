@@ -1,81 +1,15 @@
-app.controller("sapCtrl", function($scope, $location, $http) {
+app.controller("sapCtrl", function($scope, $http, playlistAPI) {
+	$scope.svc = playlistAPI;
 	$scope.artistas=[];
 	$scope.albuns=[];
 	$scope.favoritos=[];
 	$scope.notas = [10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0];
-	$scope.playlists=[];
 	
 	//album = [{nome: "", musicas: [{nome: "", ano: 000, dur: ""]}, artista: ""}]
 
 	//PLAYLISTS
-	$scope.adicionarPlaylist = function (playlist){
-
-		if (indexDaPlaylist(playlist) != -1){
-			alert("Playlist já existe no sistema");
-		} else {
-			playlist.musicas = [];
-			$scope.playlists.push(angular.copy(playlist));
-			upaPlaylists();
-		}
-
-		delete $scope.playlist;
-
-	}
-
-	$scope.showInfoPlaylist = function(playlist){	
-		if ($scope.infoPlaylist === undefined || $scope.infoPlaylist.nome == playlist.nome || $scope.boolInfoPlaylist == false){
-				$scope.boolInfoPlaylist = !$scope.boolInfoPlaylist	
-		} 
-
-			$scope.infoPlaylist = playlist;
-	}
-
-	
-	$scope.excluirPlaylist = function(playlist){
-		var excluir = confirm("Deseja realmente excluir "+playlist.nome+"?");
-		if (excluir){
-			var index = indexDaPlaylist(playlist);
-			$scope.playlists.splice(index, 1);
-			$scope.showInfoPlaylist(playlist);
-			upaPlaylists();
-		}
-		
-	}
-	$scope.excluirMusicaPlaylist = function(musica){
-		var index = indexDaPlaylist($scope.infoPlaylist);
-		var arrNomeMusicasPlaylist = $scope.playlists[index].musicas.map(function(e) { return angular.lowercase(e.nome); });
-		var iom = arrNomeMusicasPlaylist.indexOf(musica.nome);
-		
-		$scope.playlists[index].musicas.splice(iom, 1);
-		upaPlaylists();
-	}
-
 
 	//INTERLIGAR INDEX.HTML COM PLAYLIST.HTML
-	$scope.adicionarMusicaPlaylist = function (musicaDaPlaylist){
-		var mus = getMusicaPorNome(musicaDaPlaylist);
-		 if (mus === undefined){
-		 	alert("Musica não registrada no sistema");
-		} else if (existeMusica($scope.infoPlaylist.musicas, musicaDaPlaylist)){
-				alert("Musica já registrada na playlist");
-		} else {
-			var index = indexDaPlaylist($scope.infoPlaylist);
-
-			$scope.playlists[index].musicas.push(mus);
-			$scope.infoPlaylist.musicas = $scope.playlists[index].musicas
-			upaPlaylists();
-		}
-
-		delete $scope.musicaDaPlaylist;
-
-	}
-
-
-	var indexDaPlaylist = function(playlist){
-		var arrNomePlaylists = $scope.playlists.map(function(e) { return angular.lowercase(e.nome); });
-		return arrNomePlaylists.indexOf(angular.lowercase(playlist.nome));
-	}
-
 
 	//INFOARTISTA
 	$scope.showInfoArtista = function(artista){	
@@ -181,9 +115,10 @@ app.controller("sapCtrl", function($scope, $location, $http) {
 // ia = index do album
 // im = index da musica
 	var getMusicaPorNome = function(musica){
+		//incluir angular.lowercase();
 		for (var ia = 0; ia < $scope.albuns.length; ia++){
 			for (var im = 0; im < $scope.albuns[ia].musicas.length; im++){
-				if($scope.albuns[ia].musicas[im].nome == musica.nome){
+				if(angular.lowercase($scope.albuns[ia].musicas[im].nome) == angular.lowercase(musica.nome)){
 
 					return $scope.albuns[ia].musicas[im];
 				}
@@ -237,6 +172,7 @@ app.controller("sapCtrl", function($scope, $location, $http) {
 			} else {
 				$scope.albuns[indexAlbum].musicas.push(novaMusica);
 				upaAlbuns;
+				$scope.svc.setAlbuns($scope.albuns);
 				delete $scope.artistaDaMusica;
 				delete $scope.album;
 			}
@@ -249,6 +185,7 @@ app.controller("sapCtrl", function($scope, $location, $http) {
 	var adicionarAlbum = function (artistaDaMusica, album){
 			$scope.albuns.push({nome: album, musicas: [], artista: artistaDaMusica});
 			upaAlbuns();
+			$scope.svc.setAlbuns($scope.albuns);
 	}
 
 	var getListaAlbuns = function(artista){
@@ -290,18 +227,12 @@ app.controller("sapCtrl", function($scope, $location, $http) {
 		$http.get("http://localhost:3000/albuns").then(function (data, status){
 
 			$scope.albuns = data.data;
+			$scope.svc.setAlbuns($scope.albuns);
 		}).catch(function (data, status){
 			console.log(status);
 		});
 	}
 
-	var carregarPlaylists = function (){
-		$http.get("http://localhost:3000/playlists").then(function (data, status){
-			$scope.playlists = data.data;
-		}).catch(function (data, status){
-			console.log(status);
-		});
-	}
 
 	var upaAlbuns = function (){
 		$http.post("http://localhost:3000/albuns", $scope.albuns).catch(function (status){
@@ -313,13 +244,7 @@ app.controller("sapCtrl", function($scope, $location, $http) {
 			console.log(status);
 		});
 	}
-	var upaPlaylists = function (){
-		$http.post("http://localhost:3000/playlists", $scope.playlists).catch(function (status){
-			console.log(status);
-		});
-	}
 
 	carregarArtistas();
 	carregarAlbuns();
-	carregarPlaylists();
 });

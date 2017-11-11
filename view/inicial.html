@@ -29,7 +29,7 @@
 		<table id="tableArtista" ng-if="pesquisar" class="table">
 			<h4 id="tituloArtistas" ng-if="pesquisar" align="left"
 			> Artistas</h4> 
-			<h4 id="mostrarFavoritos" ng-if="pesquisar" ><a href="" ng-click="filtraFavoritos()">Mostrar Favoritos</h4>
+			<h4 id="mostrarFavoritos" ng-if="pesquisar" ><a href="" ng-click="filtraFavoritos()">{{tituloFavoritos}}</h4>
 
 			<tr align="left" ng-repeat="artista in artistas | filter: pesqArtista | orderBy: 'nome' | filter: ehFavorito">
 				<td style="text-align: left;"><a href="" ng-click="showInfoArtista(artista)">{{artista.nome}}</td></a>

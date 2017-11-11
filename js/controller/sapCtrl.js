@@ -4,6 +4,7 @@ app.controller("sapCtrl", function($scope, $http, playlistAPI) {
 	$scope.albuns=[];
 	$scope.favoritos=[];
 	$scope.notas = [10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0];
+	$scope.tituloFavoritos = "Mostrar Favoritos";
 	
 	//album = [{nome: "", musicas: [{nome: "", ano: 000, dur: ""]}, artista: ""}]
 
@@ -74,8 +75,10 @@ app.controller("sapCtrl", function($scope, $http, playlistAPI) {
 	$scope.filtraFavoritos = function(){
 		if ($scope.ehFavorito === undefined){
 			$scope.ehFavorito = true;
+			$scope.tituloFavoritos = "Mostrar Todos";
 		} else {
 			$scope.ehFavorito = undefined;
+			$scope.tituloFavoritos = "Mostrar Favoritos";
 		}
 	}
 

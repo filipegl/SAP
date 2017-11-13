@@ -55,14 +55,18 @@ app.controller("playlistCtrl", function($scope, $http, playlistAPI) {
 	}
 
 	$scope.excluirMusicaPlaylist = function(musica){
-		var index = indexDaPlaylist($scope.infoPlaylist);
-		var arrNomeMusicasPlaylist = $scope.playlists[index].musicas.map(function(e) { return angular.lowercase(e.nome); });
+		var excluir = confirm("Deseja realmente excluir "+musica.nome+" da playlist?");
+		if (excluir){
+			var index = indexDaPlaylist($scope.infoPlaylist);
+			var arrNomeMusicasPlaylist = $scope.playlists[index].musicas.map(function(e) { return angular.lowercase(e.nome); });
 
-		//incluir angular.lowercase(musica.nome)
-		var iom = arrNomeMusicasPlaylist.indexOf(musica.nome);
+			//caso de erro excluir angular.lowercase(musica.nome)
+			var iom = arrNomeMusicasPlaylist.indexOf(angular.lowercase(musica.nome));
+			
+			$scope.playlists[index].musicas.splice(iom, 1);
+			upaPlaylists();	
+		}
 		
-		$scope.playlists[index].musicas.splice(iom, 1);
-		upaPlaylists();
 	}
 
 	var indexDaPlaylist = function(playlist){

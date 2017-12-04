@@ -1,0 +1,33 @@
+<!DOCTYPE html />
+<html ng-app="sap" xmlns:th="http://www.thymeleaf.org">
+<head >
+	<meta charset="UTF-8" />
+	<title>Sistema de Áudio Personalizado</title>
+	<link rel="stylesheet" type="text/css" href="static/lib/bootstrap/css/bootstrap.css">
+	<link rel="stylesheet" type="text/css" href="static/css/app.css">
+	<script src="static/lib/angular/angular.js"></script>
+	<script src="static/lib/angular/angular-route.js"></script>
+	<script src="static/js/app.js"></script>
+	<script src="static/js/controller/sapCtrl.js"></script>
+	<script src="static/js/controller/playlistCtrl.js"></script>
+	<script src="static/js/services/playlistAPIService.js"></script>
+
+	<script type="text/javascript" src="static/js/config/routeConfig.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/1.0.3/angular-ui-router.min.js"></script>
+
+</head>
+<!-- No meu navbar playlist botton -> glyphicon glyphicon-list -->
+<body>
+	<h1> Sistema de Áudio Personalizado </h1>
+	<nav class="navbar navbar-inverse">
+		<ul class="nav navbar-nav">
+			<li><a href="#/!">Página Inicial</a></li>
+			<li><a href="#!playlists">Playlist</a></li>
+		</ul>
+	</nav>
+	<div ng-view >
+		
+	</div>
+
+</body>
+</html>

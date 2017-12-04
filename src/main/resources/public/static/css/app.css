@@ -1,0 +1,143 @@
+body {
+	background-image: url("black.jpg");
+}
+
+h1 {
+	
+    text-align: center;
+    margin-top: 60px;
+    color: white;
+    font-size: 3em;
+    text-shadow: 2.6px 2px #242424
+}
+
+h3 {
+	color: black;
+	text-shadow: 3px 0px #2424;
+}
+
+a{
+color:#000000
+}
+
+
+
+.form-control {
+	width: 300px;
+	margin-bottom: 2px;
+}
+
+.btn-default {
+	width: 300px;
+	margin-bottom: 20px;
+}
+
+.navbar {
+	margin-top: 20px;
+	width: 220px;
+	margin-left: auto;
+	margin-right: auto;
+	background-color: transparent;
+	margin-bottom: -50px;
+}
+
+.nav a{
+    color: blue;
+    font-size: 1.2em;
+    text-shadow: 2px 1px #242424
+ }
+
+.jumbotron {
+	width: 900px;
+	text-align: center;
+	margin-top: 50px;
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom: 100px;
+
+	border-style: dotted;
+}
+#nota {
+	width: 40px;
+}
+#registrar {
+	width: 100px;
+
+}
+#pesqArtista { 
+	margin-left: -435px;
+	margin-top: -80px;
+
+}
+#mostrarFavoritos{
+	float: left;
+	margin-top: -420px;
+	margin-left: 250px;
+	text-align: center;
+	text-shadow: 1px 0px #0003;
+}
+#tituloArtistas{
+	margin-left: 100px;
+	margin-top:30px;
+	margin-bottom: 400px;
+	
+	text-shadow: 1px 0px #0003;
+	color: black;
+}
+
+#tituloPlaylist{
+	margin-left: 100px;
+	margin-top:10px;
+	margin-bottom: 400px;
+}
+#infoPlaylist{
+	float: right;
+	text-align: left;
+	margin-top: -442px;
+    margin-right: 120px;
+}
+#infoArtista{
+	text-align: left;
+    margin-top: -440px;
+    margin-right: 100px;
+	margin-left: 500px;
+	margin-bottom: 40px;
+	color: black;
+    text-shadow: 0px 0px #7b7b7b;
+}
+
+
+#formArtista { 
+	margin-left: 80px;
+	width: 300px;
+	margin-top: -20px;
+
+}
+#formPlaylist {
+	margin-right: auto;
+	margin-left: auto;
+}
+
+#formMusica { 
+	margin-left: 500px;
+	width: 300px;
+	margin-top: -183px;
+}
+#tableArtista{
+	width: 300px;
+	border-collapse: collapse;
+	border: 1px;
+    margin-left: 90px;
+    margin-top: -390px;
+   	float: left;
+
+}
+#tablePlaylist{
+	width: 300px;
+	border-collapse: collapse;
+	border: 1px;
+    margin-left: 90px;
+    margin-top: -375px;
+   	float: left;
+   	text-shadow: 0.5px 0px #0003;
+}

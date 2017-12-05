@@ -25,11 +25,6 @@ public class PlaylistService {
 	}
 	
 
-	/*private Playlist buscarPorID(Long id) {
-		
-		return playlistRepository.findOne(id);
-	}*/
-
 	public Collection<Playlist> deletar(Long id) {
 		playlistRepository.delete(id);
 		return buscarTodas();

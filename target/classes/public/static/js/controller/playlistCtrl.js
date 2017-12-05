@@ -24,15 +24,12 @@ app.controller("playlistCtrl", function($scope, $http, playlistAPI) {
 			var index = indexDaPlaylist($scope.infoPlaylist);
 
 			$scope.playlists[index].musicas.push(mus);
-
-			
 			
 			$scope.infoPlaylist.musicas = $scope.playlists[index].musicas
 			atualizaPlaylist($scope.playlists[index]);
 		}
 
 		delete $scope.musicaDaPlaylist;
-
 	}
 
 	$scope.showInfoPlaylist = function(playlist){
@@ -85,8 +82,6 @@ app.controller("playlistCtrl", function($scope, $http, playlistAPI) {
 	}
 	
 	var atualizaPlaylist = function (playlist){
-		console.log("atualizando");
-		console.log(playlist);
 		$http.put("http://localhost:8080/playlist", playlist).catch(function (status){
 			console.log(status);
 		});

@@ -24,7 +24,6 @@ public class PlaylistController {
 	@RequestMapping(method = RequestMethod.POST, value = "/playlist", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Playlist> adicionarPlaylist(@RequestBody Playlist playlist) {
 		Playlist playlistAdicionada = playlistService.adicionar(playlist);
-		System.out.println("A playlist eh: " + playlist.getNome());
 		return new ResponseEntity<Playlist>(playlistAdicionada, HttpStatus.CREATED);
 	}
 	

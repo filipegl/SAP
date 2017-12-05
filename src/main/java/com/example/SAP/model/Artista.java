@@ -13,6 +13,8 @@ public class Artista {
 	String nome;
 	String img;
 	boolean favorito;
+	Musica ultimaMusica;
+	String nota;
 	
 	public Long getId() {
 		return id;
@@ -37,6 +39,18 @@ public class Artista {
 	}
 	public void setFavorito(boolean favorito) {
 		this.favorito = favorito;
+	}
+	public Musica getUltimaMusica() {
+		return ultimaMusica;
+	}
+	public void setUltimaMusica(Musica ultimaMusica) {
+		this.ultimaMusica = ultimaMusica;
+	}
+	public String getNota() {
+		return nota;
+	}
+	public void setNota(String nota) {
+		this.nota = nota;
 	}
 
 }

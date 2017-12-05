@@ -1,6 +1,4 @@
 app.controller("sapCtrl", function($scope, $http, playlistAPI) {
-	$scope.svc = playlistAPI;
-	//trocar svc por playlistAPI
 	$scope.artistas=[];
 	$scope.albuns=[];
 	$scope.favoritos=[];
@@ -112,7 +110,6 @@ app.controller("sapCtrl", function($scope, $http, playlistAPI) {
 // ia = index do album
 // im = index da musica
 	var getMusicaPorNome = function(musica){
-		//incluir angular.lowercase();
 		for (var ia = 0; ia < $scope.albuns.length; ia++){
 			for (var im = 0; im < $scope.albuns[ia].musicas.length; im++){
 				if(angular.lowercase($scope.albuns[ia].musicas[im].nome) == angular.lowercase(musica.nome)){
@@ -159,16 +156,18 @@ app.controller("sapCtrl", function($scope, $http, playlistAPI) {
 				adicionarAlbum(artistaDaMusica, album);
 				indexAlbum = indexDoAlbum(album);
 			}
-
 			var musicasDoAlbum = $scope.albuns[indexAlbum].musicas;
 
-			if(existeMusica(musicasDoAlbum, novaMusica)){
+			if(playlistAPI.existeMusica(musicasDoAlbum, novaMusica)){
 				alert("Música já existente no álbum");
 
 			} else {
 				$scope.albuns[indexAlbum].musicas.push(novaMusica);
-				upaAlbuns;
-				$scope.svc.setAlbuns($scope.albuns);
+				if ($scope.albuns[indexAlbum].id != undefined){
+					atualizaAlbum($scope.albuns[indexAlbum]);
+				}
+				playlistAPI.setAlbuns($scope.albuns);
+
 				delete $scope.artistaDaMusica;
 				delete $scope.album;
 			}
@@ -178,10 +177,12 @@ app.controller("sapCtrl", function($scope, $http, playlistAPI) {
 	}
 
 //ALBUNS
-	var adicionarAlbum = function (artistaDaMusica, album){
-			$scope.albuns.push({nome: album, musicas: [], artista: artistaDaMusica});
-			upaAlbuns();
-			$scope.svc.setAlbuns($scope.albuns);
+	var adicionarAlbum = function (artistaDaMusica, nomeAlbum){
+		var album = {nome: nomeAlbum, musicas: [], artista: artistaDaMusica};
+		$scope.albuns.push(album);
+		playlistAPI.setAlbuns($scope.albuns);
+
+		upaAlbum(album);
 	}
 
 	var getListaAlbuns = function(artista){
@@ -192,17 +193,6 @@ app.controller("sapCtrl", function($scope, $http, playlistAPI) {
 			}
 		}
 		return albunsDoArtista;
-	}
-
-
-//============================
-	var existeMusica = function (musicasDoAlbum, musica) {
-		arrNomeMusicasDoAlbum = musicasDoAlbum.map(function(e) { return angular.lowercase(e.nome); });
-		if (arrNomeMusicasDoAlbum.indexOf(angular.lowercase(musica.nome)) != -1){
-			return true;
-		} else {
-			return false;
-		}
 	}
 
 	var indexDoAlbum = function (album) {
@@ -219,18 +209,19 @@ app.controller("sapCtrl", function($scope, $http, playlistAPI) {
 		});
 	}
 	var carregarAlbuns = function (){
-		$http.get("http://localhost:3000/albuns").then(function (data, status){
-
-			$scope.albuns = data.data;
-			$scope.svc.setAlbuns($scope.albuns);
-		}).catch(function (data, status){
+		$http.get("http://localhost:8080/albuns").then(function (response){
+			$scope.albuns = response.data;
+			playlistAPI.setAlbuns($scope.albuns);
+		}).catch(function (status){
 			console.log(status);
 		});
 	}
 
 
-	var upaAlbuns = function (){
-		$http.post("http://localhost:3000/albuns", $scope.albuns).catch(function (status){
+	var upaAlbum = function (album){
+		$http.post("http://localhost:8080/albuns", album).then(function(response){
+			carregarAlbuns();
+		}).catch(function (status){
 			console.log(status);
 		});
 	}
@@ -246,6 +237,12 @@ app.controller("sapCtrl", function($scope, $http, playlistAPI) {
 			console.log(status);
 		});
 	}
+	var atualizaAlbum = function (album){
+		$http.put("http://localhost:8080/albuns", album).catch(function (status){
+			console.log(status);
+		});
+	}
+
 
 	carregarArtistas();
 	carregarAlbuns();

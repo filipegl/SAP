@@ -6,20 +6,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.SAP.model.Artista;
-import com.example.SAP.repository.ArtistaReposiroty;
+import com.example.SAP.repository.ArtistaRepository;
 
 @Service
 public class ArtistaService {
 	
 	@Autowired
-	ArtistaReposiroty artistaReposiroty;
+	ArtistaRepository artistaRepository;
 	
 	public Artista adicionar(Artista artista) {
-		return artistaReposiroty.save(artista);
+		return artistaRepository.save(artista);
 	}
 
 	public Collection<Artista> buscarTodos() {
-		return artistaReposiroty.findAll();
+		return artistaRepository.findAll();
 	}
 
 }

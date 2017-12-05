@@ -21,19 +21,19 @@ public class ArtistaController {
 	ArtistaService artistaService;
 
 	@RequestMapping(method = RequestMethod.POST, value = "/artistas", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Artista> adicionarPlaylist(@RequestBody Artista playlist) {
-		Artista artistaAdicionado = artistaService.adicionar(playlist);
+	public ResponseEntity<Artista> adicionarArtista(@RequestBody Artista artista) {
+		Artista artistaAdicionado = artistaService.adicionar(artista);
 		return new ResponseEntity<Artista>(artistaAdicionado, HttpStatus.CREATED);
 	}
 	
 	@RequestMapping(method = RequestMethod.PUT, value = "/artistas", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Artista> atualizarPlaylist(@RequestBody Artista playlist) {
-		Artista artistaAtualizado = artistaService.adicionar(playlist);
+	public ResponseEntity<Artista> atualizarArtista(@RequestBody Artista artista) {
+		Artista artistaAtualizado = artistaService.adicionar(artista);
 		return new ResponseEntity<Artista>(artistaAtualizado, HttpStatus.OK);
 	}
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/artistas", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Collection<Artista>> buscarTodasPlaylists() {
+	public ResponseEntity<Collection<Artista>> buscarTodosArtistas() {
 
 		Collection<Artista> artistasBuscados = artistaService.buscarTodos();
 		return new ResponseEntity<>(artistasBuscados, HttpStatus.OK);

@@ -11,6 +11,9 @@ public class Album {
 	@GeneratedValue
 	Long id;
 	String nome;
+	Musica[] musicas;
+	String artista;
+	
 	public Long getId() {
 		return id;
 	}
@@ -22,5 +25,17 @@ public class Album {
 	}
 	public void setNome(String nome) {
 		this.nome = nome;
+	}
+	public Musica[] getMusicas() {
+		return musicas;
+	}
+	public void setMusicas(Musica[] musicas) {
+		this.musicas = musicas;
+	}
+	public String getArtista() {
+		return artista;
+	}
+	public void setArtista(String artista) {
+		this.artista = artista;
 	}
 }

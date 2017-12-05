@@ -11,6 +11,9 @@ public class Artista {
 	@GeneratedValue
 	Long id;
 	String nome;
+	String img;
+	boolean favorito;
+	
 	public Long getId() {
 		return id;
 	}
@@ -22,6 +25,18 @@ public class Artista {
 	}
 	public void setNome(String nome) {
 		this.nome = nome;
+	}
+	public String getImg() {
+		return img;
+	}
+	public void setImg(String img) {
+		this.img = img;
+	}
+	public boolean isFavorito() {
+		return favorito;
+	}
+	public void setFavorito(boolean favorito) {
+		this.favorito = favorito;
 	}
 
 }

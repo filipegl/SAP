@@ -18,9 +18,7 @@ public class PlaylistService {
 		return playlistRepository.findAll();
 	}
 
-	public Playlist adicionar(Playlist playlist) {
-		System.out.println("Salvando PL no repository...");
-		
+	public Playlist adicionar(Playlist playlist) {		
 		return playlistRepository.save(playlist);
 	}
 	

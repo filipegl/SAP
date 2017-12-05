@@ -1,5 +1,6 @@
 app.controller("sapCtrl", function($scope, $http, playlistAPI) {
 	$scope.svc = playlistAPI;
+	//trocar svc por playlistAPI
 	$scope.artistas=[];
 	$scope.albuns=[];
 	$scope.favoritos=[];
@@ -32,7 +33,7 @@ app.controller("sapCtrl", function($scope, $http, playlistAPI) {
 			$scope.infoArtista.ultimaMusica= getArtista().ultimaMusica;
 			delete $scope.musica;
 		}
-		upaArtistas();	
+		atualizaArtista(getArtista());	
 	}
 
 	//ARTISTAS e FAVORITOS
@@ -51,8 +52,7 @@ app.controller("sapCtrl", function($scope, $http, playlistAPI) {
 			alert("Artista já existente no sistema");
 
 		} else {
-			$scope.artistas.push(angular.copy(artista));
-			upaArtistas();
+			upaArtista(angular.copy(artista));
 		}
 
 		delete $scope.artista;
@@ -92,10 +92,9 @@ app.controller("sapCtrl", function($scope, $http, playlistAPI) {
 			var excluir = confirm("Deseja realmente excluir "+artista.nome+" da lista de favoritos?");
 			if (excluir){
 				removeFavoritos(artista);
-
 			}
 		}
-		upaArtistas();
+		atualizaArtista(artista);
 	}
 
 	var adicionarFavoritos = function(artista){
@@ -149,7 +148,6 @@ app.controller("sapCtrl", function($scope, $http, playlistAPI) {
 
 		return musicasDoArtista;
 	}
-
 	
 
 	$scope.adicionarMusica = function(novaMusica, artistaDaMusica, album){
@@ -212,13 +210,11 @@ app.controller("sapCtrl", function($scope, $http, playlistAPI) {
 		return arrNomeAlbuns.indexOf(angular.lowercase(album));
 	}
 
-//HTTP BACKAND
-	//Mudar endereço para 8080
+//HTTP
 	var carregarArtistas = function (){
-		$http.get("http://localhost:3000/artistas").then(function (data, status){
-	
-			$scope.artistas = data.data;
-		}).catch(function (data, status){
+		$http.get("http://localhost:8080/artistas").then(function (response){
+			$scope.artistas = response.data;
+		}).catch(function (status){
 			console.log(status);
 		});
 	}
@@ -238,8 +234,15 @@ app.controller("sapCtrl", function($scope, $http, playlistAPI) {
 			console.log(status);
 		});
 	}
-	var upaArtistas = function (){
-		$http.post("http://localhost:3000/artistas", $scope.artistas).catch(function (status){
+	var upaArtista = function (artista){
+		$http.post("http://localhost:8080/artistas", artista).then(function(response){
+			$scope.artistas.push(response.data);
+		}).catch(function (status){
+			console.log(status);
+		});
+	}
+	var atualizaArtista = function (artista){
+		$http.put("http://localhost:8080/artistas", artista).catch(function (status){
 			console.log(status);
 		});
 	}

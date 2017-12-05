@@ -1,5 +1,15 @@
 package com.example.SAP.model;
 
-public class Musica {
+import java.io.Serializable;
 
+public class Musica implements Serializable{
+	String nome;
+
+	public String getNome() {
+		return nome;
+	}
+
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
 }

@@ -6,12 +6,10 @@ app.controller("playlistCtrl", function($scope, $http, playlistAPI) {
 			alert("Playlist já existe no sistema");
 		} else {
 			playlist.musicas = [];
-			$scope.playlists.push(angular.copy(playlist));
-			upaPlaylists();
+			upaPlaylist(angular.copy(playlist));
 		}
 
 		delete $scope.playlist;
-
 	}
 
 	$scope.adicionarMusicaPlaylist = function (musicaDaPlaylist){
@@ -26,8 +24,11 @@ app.controller("playlistCtrl", function($scope, $http, playlistAPI) {
 			var index = indexDaPlaylist($scope.infoPlaylist);
 
 			$scope.playlists[index].musicas.push(mus);
+
+			
+			
 			$scope.infoPlaylist.musicas = $scope.playlists[index].musicas
-			upaPlaylists();
+			atualizaPlaylist($scope.playlists[index]);
 		}
 
 		delete $scope.musicaDaPlaylist;
@@ -48,7 +49,8 @@ app.controller("playlistCtrl", function($scope, $http, playlistAPI) {
 			var index = indexDaPlaylist(playlist);
 			$scope.playlists.splice(index, 1);
 			$scope.showInfoPlaylist(playlist);
-			upaPlaylists();
+			
+			deletaPlaylist(playlist.id);
 		}
 	}
 
@@ -58,11 +60,10 @@ app.controller("playlistCtrl", function($scope, $http, playlistAPI) {
 			var index = indexDaPlaylist($scope.infoPlaylist);
 			var arrNomeMusicasPlaylist = $scope.playlists[index].musicas.map(function(e) { return angular.lowercase(e.nome); });
 
-			//caso de erro excluir angular.lowercase(musica.nome)
 			var iom = arrNomeMusicasPlaylist.indexOf(angular.lowercase(musica.nome));
 			
 			$scope.playlists[index].musicas.splice(iom, 1);
-			upaPlaylists();	
+			atualizaPlaylist($scope.playlists[index]);	
 		}
 		
 	}
@@ -74,17 +75,33 @@ app.controller("playlistCtrl", function($scope, $http, playlistAPI) {
 
 
 	//HTTP
-	var upaPlaylists = function (){
-		console.log("upa");
-		console.log($scope.playlists);
-		$http.post("http://localhost:8080/playlist", $scope.playlists).catch(function (status){
+	var upaPlaylist = function (playlist){
+		$http.post("http://localhost:8080/playlist", playlist).then(function (response){
+			$scope.playlists.push(response.data);
+			
+		}).catch(function(status){
+			console.log(status);
+		});
+	}
+	
+	var atualizaPlaylist = function (playlist){
+		console.log("atualizando");
+		console.log(playlist);
+		$http.put("http://localhost:8080/playlist", playlist).catch(function (status){
+			console.log(status);
+		});
+	}
+	var deletaPlaylist = function (id){
+		$http.delete("http://localhost:8080/playlist/" + id).then(function (response, status){
+			$scope.playlists = response.data;
+		}).catch(function (status){
 			console.log(status);
 		});
 	}
 	var carregarPlaylists = function (){
-		$http.get("http://localhost:8080/playlist").then(function (data, status){
-			$scope.playlists = data.data;
-		}).catch(function (data, status){
+		$http.get("http://localhost:8080/playlist").then(function (response, status){
+			$scope.playlists = response.data;
+		}).catch(function (status){
 			console.log(status);
 		});
 	}

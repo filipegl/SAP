@@ -19,8 +19,22 @@ public class PlaylistService {
 	}
 
 	public Playlist adicionar(Playlist playlist) {
+		System.out.println("Salvando PL no repository...");
 		
 		return playlistRepository.save(playlist);
 	}
+	
+
+	/*private Playlist buscarPorID(Long id) {
+		
+		return playlistRepository.findOne(id);
+	}*/
+
+	public Collection<Playlist> deletar(Long id) {
+		playlistRepository.delete(id);
+		return buscarTodas();
+	}
+
+	
 
 }

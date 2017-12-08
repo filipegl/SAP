@@ -1,29 +1,22 @@
-app.service("playlistAPI", function(){
+app.service("playlistAPI", function(albumAPI){
 	var that = this;
 
-	this.albuns = [];
-	this.setAlbuns = function (albuns){
-		this.albuns = albuns;
-	}
+	this.albuns = albumAPI.getAlbuns();
 	
 	this.getMusicaPorNome = function(musica){
-		for (var ia = 0; ia < that.albuns.length; ia++){
-			for (var im = 0; im < that.albuns[ia].musicas.length; im++){
-				if(angular.lowercase(that.albuns[ia].musicas[im].nome) == angular.lowercase(musica.nome)){
+		for (var indexAlbum = 0; indexAlbum < that.albuns.length; indexAlbum++){
+			for (var indexMusica = 0; indexMusica < that.albuns[indexAlbum].musicas.length; indexMusica++){
+				if(angular.lowercase(that.albuns[indexAlbum].musicas[indexMusica].nome) == angular.lowercase(musica.nome)){
 
-					return that.albuns[ia].musicas[im];
+					return that.albuns[indexAlbum].musicas[indexMusica];
 				}
 			}
 		}
 		return undefined;
 	}
-
-	this.existeMusica = function (musicasDaPlaylist, musica) {
-		arrNomeMusicasDaPlaylist = musicasDaPlaylist.map(function(e) { return angular.lowercase(e.nome); });
-		if (arrNomeMusicasDaPlaylist.indexOf(angular.lowercase(musica.nome)) != -1){
-			return true;
-		} else {
-			return false;
-		}
+	
+	this.existeMusica = function (musicas, musica) {
+		var arrNomeMusicas = musicas.map(function(e) { return angular.lowercase(e.nome); });
+		return (arrNomeMusicas.indexOf(angular.lowercase(musica.nome)) != -1)
 	}
 });

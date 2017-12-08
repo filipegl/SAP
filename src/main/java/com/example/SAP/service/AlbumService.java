@@ -1,6 +1,7 @@
 package com.example.SAP.service;
 
 import java.util.Collection;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,19 +24,16 @@ public class AlbumService {
 		return albumRepository.save(album);
 	}
 	
-	public Album getAlbumPorNome(String nome) {
-		return albumRepository.getAlbumPorNome(nome);
-	}
-
-	public boolean existeAlbum(String nome) {
-		boolean result = true;
-		System.out.print("Retorno do metodo do repository: ");
-		System.out.println(albumRepository.getAlbumPorNome(nome) + "eh null??");
-		if (albumRepository.getAlbumPorNome(nome) != null) { //verificar essa linha
-			result = false;
-		}
+	public Album albumDoRepository(Album album) {
+		List<Album> albunsComMesmoNome = albumRepository.getAlbunsPorNome(album.getNome());
+		Album albumBuscado = null;
 		
-		return result;
+		for (Album a : albunsComMesmoNome) {
+			if (a.getArtista().toUpperCase().equals(album.getArtista().toUpperCase())){
+				albumBuscado = a;
+			}
+		}
+		return albumBuscado;
 	}
 
 }

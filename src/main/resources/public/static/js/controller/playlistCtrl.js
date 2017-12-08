@@ -51,7 +51,6 @@ app.controller("playlistCtrl", function($scope, $http, playlistAPI) {
 		if (excluir){
 			var index = indexDaPlaylist(playlist);
 			$scope.playlists.splice(index, 1);
-			// $scope.showInfoPlaylist(playlist);
 			removeInfoPlaylist(playlist);
 			
 			deletaPlaylist(playlist.id);

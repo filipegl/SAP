@@ -22,29 +22,26 @@ public class AlbumController {
 
 	@RequestMapping(method = RequestMethod.POST, value = "/albuns", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Album> adicionarAlbum(@RequestBody Album album) {
-	
-		Album retornoDoMetodo = albumService.getAlbumPorNome(album.getNome());
-		if (retornoDoMetodo == null) {
-			retornoDoMetodo = albumService.adicionar(album);
+		
+		Album albumEncontrado = albumService.albumDoRepository(album);			
+		if (albumEncontrado == null) {
+			albumEncontrado = albumService.adicionar(album);
 		}
-
-		return new ResponseEntity<Album>(retornoDoMetodo, HttpStatus.CREATED);
+	
+		return new ResponseEntity<Album>(albumEncontrado, HttpStatus.CREATED);
 	}
 	
 	
 	@RequestMapping(method = RequestMethod.PUT, value = "/albuns", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Album> atualizarAlbum(@RequestBody Album album) {
-		Album albumAtualizado = albumService.adicionar(album);
-		System.out.println("Passou pel PUT quantas vezes?");
-		System.out.println("id do PUT: " + album.getId());
-		return new ResponseEntity<Album>(albumAtualizado, HttpStatus.OK);
+		
+		return new ResponseEntity<Album>(albumService.adicionar(album), HttpStatus.OK);
 	}
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/albuns", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Collection<Album>> buscarTodosAlbuns() {
-
-		Collection<Album> albunsBuscados = albumService.buscarTodos();
-		return new ResponseEntity<>(albunsBuscados, HttpStatus.OK);
+		
+		return new ResponseEntity<>(albumService.buscarTodos(), HttpStatus.OK);
 	}
 
 

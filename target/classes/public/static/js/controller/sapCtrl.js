@@ -1,6 +1,8 @@
-app.controller("sapCtrl", function($scope, $http, playlistAPI) {
+app.controller("sapCtrl", function($scope, $http, playlistAPI, albumAPI) {
+	//se der certo retirar artistas e albuns
 	$scope.artistas=[];
-	$scope.albuns=[];
+	$scope.albuns = albumAPI.getAlbuns();
+	//retirar a cima.
 	$scope.favoritos=[];
 	$scope.notas = [10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0];
 	$scope.tituloFavoritos = "Mostrar Favoritos";
@@ -11,7 +13,7 @@ app.controller("sapCtrl", function($scope, $http, playlistAPI) {
 			$scope.boolInfoArtista = !$scope.boolInfoArtista;
 		}
 
-		var albunsDoArtista = getAlbunsDoArtista(artista);
+		var albunsDoArtista = albumAPI.getAlbunsDoArtista(artista);
 		var musicasDoArtista = getMusicasDoArtista(albunsDoArtista);
 
 		$scope.infoArtista={nome: artista.nome, nota:artista.nota, ultimaMusica: artista.ultimaMusica, img: artista.img, albuns: albunsDoArtista, musicas: musicasDoArtista};
@@ -103,18 +105,6 @@ app.controller("sapCtrl", function($scope, $http, playlistAPI) {
 		$scope.artistas[index].favorito = false;
 	}
 
-	var getMusicaPorNome = function(musica){
-		for (var indexAlbum = 0; indexAlbum < $scope.albuns.length; indexAlbum++){
-			for (var indexMusica = 0; indexMusica < $scope.albuns[indexAlbum].musicas.length; indexMusica++){
-				if(angular.lowercase($scope.albuns[indexAlbum].musicas[indexMusica].nome) == angular.lowercase(musica.nome)){
-
-					return $scope.albuns[indexAlbum].musicas[indexMusica];
-				}
-			}
-		}
-		return undefined;
-	}
-
 	var getMusica = function(musica){
 		for (var indexAlbum = 0; indexAlbum < $scope.albuns.length; indexAlbum++){
 			if($scope.albuns[indexAlbum].nome == musica.album){
@@ -147,24 +137,27 @@ app.controller("sapCtrl", function($scope, $http, playlistAPI) {
 
 			adicionarAlbum(artistaDaMusica, album);
 			
-			var indexAlbum = indexDoAlbum(album);
-			var musicasDoAlbum = $scope.albuns[indexAlbum].musicas;
+			window.setTimeout(function (){
+				var indexAlbum = albumAPI.indexDoAlbum(artistaDaMusica, album);
+				var musicasDoAlbum = $scope.albuns[indexAlbum].musicas;
+				if(playlistAPI.existeMusica(musicasDoAlbum, novaMusica)){
+					alert("Música já existente no álbum");
 
-			if(playlistAPI.existeMusica(musicasDoAlbum, novaMusica)){
-				alert("Música já existente no álbum");
+				} else {
+					
+					$scope.albuns[indexAlbum].musicas.push(novaMusica);
+					if ($scope.albuns[indexAlbum].id != undefined){
+						atualizaAlbum($scope.albuns[indexAlbum]);
+					}
+					albumAPI.setAlbuns($scope.albuns);
 
-			} else {
-				$scope.albuns[indexAlbum].musicas.push(novaMusica);
-				if ($scope.albuns[indexAlbum].id != undefined){
-					atualizaAlbum($scope.albuns[indexAlbum]);
+					delete $scope.artistaDaMusica;
+					delete $scope.album;
 				}
-				playlistAPI.setAlbuns($scope.albuns);
 
-				delete $scope.artistaDaMusica;
-				delete $scope.album;
-			}
+				delete $scope.novaMusica;
 
-			delete $scope.novaMusica;
+			}, 200);
 		}
 	}
 
@@ -172,26 +165,11 @@ app.controller("sapCtrl", function($scope, $http, playlistAPI) {
 	var adicionarAlbum = function (artistaDaMusica, nomeAlbum){
 		var album = {nome: nomeAlbum, musicas: [], artista: artistaDaMusica};
 		$scope.albuns.push(album);
-		playlistAPI.setAlbuns($scope.albuns);
+		albumAPI.setAlbuns($scope.albuns);
 		upaAlbum(album);
+		
 		return album;
 	}
-
-	var getAlbunsDoArtista = function(artista){
-		var albunsDoArtista=[];
-		for (var i = 0; i < $scope.albuns.length; i++){
-			if (angular.lowercase($scope.albuns[i].artista) == angular.lowercase(artista.nome)){
-				albunsDoArtista.push($scope.albuns[i]);
-			}
-		}
-		return albunsDoArtista;
-	}
-
-	var indexDoAlbum = function (album) {
-		var arrNomeAlbuns = $scope.albuns.map(function(e) { return angular.lowercase(e.nome); });
-		return arrNomeAlbuns.indexOf(angular.lowercase(album));
-	}
-
 
 //HTTP
 	var carregaArtistas = function (){
@@ -205,7 +183,7 @@ app.controller("sapCtrl", function($scope, $http, playlistAPI) {
 	var carregaAlbuns = function (){
 		$http.get("http://localhost:8080/albuns").then(function (response){
 			$scope.albuns = response.data;
-			playlistAPI.setAlbuns($scope.albuns);
+			albumAPI.setAlbuns($scope.albuns);
 		}).catch(function (status){
 			console.log(status);
 		});
@@ -213,8 +191,7 @@ app.controller("sapCtrl", function($scope, $http, playlistAPI) {
 
 	var upaAlbum = function (album){
 		$http.post("http://localhost:8080/albuns", album).then(function(response){
-			carregaAlbuns();
-
+			carregaAlbuns()
 		}).catch(function (status){
 			console.log(status);
 		});

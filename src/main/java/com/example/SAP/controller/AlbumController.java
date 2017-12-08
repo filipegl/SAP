@@ -22,18 +22,22 @@ public class AlbumController {
 
 	@RequestMapping(method = RequestMethod.POST, value = "/albuns", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Album> adicionarAlbum(@RequestBody Album album) {
-		Album artistaAdicionado = albumService.adicionar(album);
-		System.out.println("Passou pel POST quantas vezes?");
-		System.out.println("id do POST: " + album.getId());
-		return new ResponseEntity<Album>(artistaAdicionado, HttpStatus.CREATED);
+	
+		Album retornoDoMetodo = albumService.getAlbumPorNome(album.getNome());
+		if (retornoDoMetodo == null) {
+			retornoDoMetodo = albumService.adicionar(album);
+		}
+
+		return new ResponseEntity<Album>(retornoDoMetodo, HttpStatus.CREATED);
 	}
+	
 	
 	@RequestMapping(method = RequestMethod.PUT, value = "/albuns", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Album> atualizarAlbum(@RequestBody Album album) {
-		Album artistaAtualizado = albumService.adicionar(album);
+		Album albumAtualizado = albumService.adicionar(album);
 		System.out.println("Passou pel PUT quantas vezes?");
 		System.out.println("id do PUT: " + album.getId());
-		return new ResponseEntity<Album>(artistaAtualizado, HttpStatus.OK);
+		return new ResponseEntity<Album>(albumAtualizado, HttpStatus.OK);
 	}
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/albuns", produces = MediaType.APPLICATION_JSON_VALUE)

@@ -40,12 +40,19 @@ app.controller("playlistCtrl", function($scope, $http, playlistAPI) {
 			$scope.infoPlaylist = playlist;
 	}
 
+	var removeInfoPlaylist = function(playlist){
+		if ($scope.infoPlaylist != undefined && $scope.infoPlaylist.nome == playlist.nome){
+			$scope.boolInfoPlaylist = false;
+		}
+	}
+
 	$scope.excluirPlaylist = function(playlist){
 		var excluir = confirm("Deseja realmente excluir "+playlist.nome+"?");
 		if (excluir){
 			var index = indexDaPlaylist(playlist);
 			$scope.playlists.splice(index, 1);
-			$scope.showInfoPlaylist(playlist);
+			// $scope.showInfoPlaylist(playlist);
+			removeInfoPlaylist(playlist);
 			
 			deletaPlaylist(playlist.id);
 		}
@@ -57,9 +64,9 @@ app.controller("playlistCtrl", function($scope, $http, playlistAPI) {
 			var index = indexDaPlaylist($scope.infoPlaylist);
 			var arrNomeMusicasPlaylist = $scope.playlists[index].musicas.map(function(e) { return angular.lowercase(e.nome); });
 
-			var iom = arrNomeMusicasPlaylist.indexOf(angular.lowercase(musica.nome));
+			var indexMusica = arrNomeMusicasPlaylist.indexOf(angular.lowercase(musica.nome));
 			
-			$scope.playlists[index].musicas.splice(iom, 1);
+			$scope.playlists[index].musicas.splice(indexMusica, 1);
 			atualizaPlaylist($scope.playlists[index]);	
 		}
 		
@@ -93,13 +100,13 @@ app.controller("playlistCtrl", function($scope, $http, playlistAPI) {
 			console.log(status);
 		});
 	}
-	var carregarPlaylists = function (){
+	var carregaPlaylists = function (){
 		$http.get("http://localhost:8080/playlist").then(function (response, status){
 			$scope.playlists = response.data;
 		}).catch(function (status){
 			console.log(status);
 		});
 	}
-	carregarPlaylists();
+	carregaPlaylists();
 
 }); 

@@ -4,17 +4,15 @@ app.controller("sapCtrl", function($scope, $http, playlistAPI) {
 	$scope.favoritos=[];
 	$scope.notas = [10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0];
 	$scope.tituloFavoritos = "Mostrar Favoritos";
-	
-	//album = [{nome: "", musicas: [{nome: "", ano: 000, dur: ""]}, artista: ""}]
 
 	//INFOARTISTA
 	$scope.showInfoArtista = function(artista){	
-		if ($scope.infoArtista === undefined || $scope.infoArtista.nome ==  artista.nome || $scope.boolInfoArtista == false){
+		if ($scope.infoArtista === undefined || $scope.infoArtista.nome == artista.nome || $scope.boolInfoArtista == false){
 			$scope.boolInfoArtista = !$scope.boolInfoArtista;
 		}
 
-		var albunsDoArtista = getListaAlbuns(artista);
-		var musicasDoArtista = getMusicas(albunsDoArtista);
+		var albunsDoArtista = getAlbunsDoArtista(artista);
+		var musicasDoArtista = getMusicasDoArtista(albunsDoArtista);
 
 		$scope.infoArtista={nome: artista.nome, nota:artista.nota, ultimaMusica: artista.ultimaMusica, img: artista.img, albuns: albunsDoArtista, musicas: musicasDoArtista};
 	}
@@ -45,10 +43,10 @@ app.controller("sapCtrl", function($scope, $http, playlistAPI) {
 
 		return $scope.artistas[index];
 	}
+	
 	$scope.adicionarArtista = function(artista) {
 		if (existeArtista(artista)) {
 			alert("Artista já existente no sistema");
-
 		} else {
 			upaArtista(angular.copy(artista));
 		}
@@ -105,28 +103,25 @@ app.controller("sapCtrl", function($scope, $http, playlistAPI) {
 		$scope.artistas[index].favorito = false;
 	}
 
-
-//MUSICAS
-// ia = index do album
-// im = index da musica
 	var getMusicaPorNome = function(musica){
-		for (var ia = 0; ia < $scope.albuns.length; ia++){
-			for (var im = 0; im < $scope.albuns[ia].musicas.length; im++){
-				if(angular.lowercase($scope.albuns[ia].musicas[im].nome) == angular.lowercase(musica.nome)){
+		for (var indexAlbum = 0; indexAlbum < $scope.albuns.length; indexAlbum++){
+			for (var indexMusica = 0; indexMusica < $scope.albuns[indexAlbum].musicas.length; indexMusica++){
+				if(angular.lowercase($scope.albuns[indexAlbum].musicas[indexMusica].nome) == angular.lowercase(musica.nome)){
 
-					return $scope.albuns[ia].musicas[im];
+					return $scope.albuns[indexAlbum].musicas[indexMusica];
 				}
 			}
 		}
 		return undefined;
 	}
-	var getMusica = function(musica){
-		for (var ia = 0; ia < $scope.albuns.length; ia++){
-			if($scope.albuns[ia].nome == musica.album){
 
-				for (var im = 0; im < $scope.albuns[ia].musicas.length; im++){
-					if($scope.albuns[ia].musicas[im].nome == musica.nome){
-						return $scope.albuns[ia].musicas[im];
+	var getMusica = function(musica){
+		for (var indexAlbum = 0; indexAlbum < $scope.albuns.length; indexAlbum++){
+			if($scope.albuns[indexAlbum].nome == musica.album){
+
+				for (var indexMusica = 0; indexMusica < $scope.albuns[indexAlbum].musicas.length; indexMusica++){
+					if($scope.albuns[indexAlbum].musicas[indexMusica].nome == musica.nome){
+						return $scope.albuns[indexAlbum].musicas[indexMusica];
 					}
 				}
 			}
@@ -134,15 +129,14 @@ app.controller("sapCtrl", function($scope, $http, playlistAPI) {
 	}
 
 
-	var getMusicas = function (albunsDoArtista){
+	var getMusicasDoArtista = function (albunsDoArtista){
 		var musicasDoArtista=[];
-		for (var ia = 0; ia < albunsDoArtista.length; ia++){
-			for (var im = 0; im < albunsDoArtista[ia].musicas.length; im++){
+		for (var indexAlbum = 0; indexAlbum < albunsDoArtista.length; indexAlbum++){
+			for (var indexMusica = 0; indexMusica < albunsDoArtista[indexAlbum].musicas.length; indexMusica++){
 
-				musicasDoArtista.push({nome: albunsDoArtista[ia].musicas[im].nome, album: albunsDoArtista[ia].nome})
+				musicasDoArtista.push({nome: albunsDoArtista[indexAlbum].musicas[indexMusica].nome, album: albunsDoArtista[indexAlbum].nome})
 			}
 		}
-
 		return musicasDoArtista;
 	}
 	
@@ -150,12 +144,10 @@ app.controller("sapCtrl", function($scope, $http, playlistAPI) {
 	$scope.adicionarMusica = function(novaMusica, artistaDaMusica, album){
 		var adicionar = confirm("Você realmente quer adicionar esta música?");
 		if (adicionar) {
-			var indexAlbum = indexDoAlbum(album);
 
-			if (indexAlbum == -1){
-				adicionarAlbum(artistaDaMusica, album);
-				indexAlbum = indexDoAlbum(album);
-			}
+			adicionarAlbum(artistaDaMusica, album);
+			
+			var indexAlbum = indexDoAlbum(album);
 			var musicasDoAlbum = $scope.albuns[indexAlbum].musicas;
 
 			if(playlistAPI.existeMusica(musicasDoAlbum, novaMusica)){
@@ -181,11 +173,11 @@ app.controller("sapCtrl", function($scope, $http, playlistAPI) {
 		var album = {nome: nomeAlbum, musicas: [], artista: artistaDaMusica};
 		$scope.albuns.push(album);
 		playlistAPI.setAlbuns($scope.albuns);
-
 		upaAlbum(album);
+		return album;
 	}
 
-	var getListaAlbuns = function(artista){
+	var getAlbunsDoArtista = function(artista){
 		var albunsDoArtista=[];
 		for (var i = 0; i < $scope.albuns.length; i++){
 			if (angular.lowercase($scope.albuns[i].artista) == angular.lowercase(artista.nome)){
@@ -200,15 +192,17 @@ app.controller("sapCtrl", function($scope, $http, playlistAPI) {
 		return arrNomeAlbuns.indexOf(angular.lowercase(album));
 	}
 
+
 //HTTP
-	var carregarArtistas = function (){
+	var carregaArtistas = function (){
 		$http.get("http://localhost:8080/artistas").then(function (response){
 			$scope.artistas = response.data;
 		}).catch(function (status){
 			console.log(status);
 		});
 	}
-	var carregarAlbuns = function (){
+
+	var carregaAlbuns = function (){
 		$http.get("http://localhost:8080/albuns").then(function (response){
 			$scope.albuns = response.data;
 			playlistAPI.setAlbuns($scope.albuns);
@@ -217,10 +211,10 @@ app.controller("sapCtrl", function($scope, $http, playlistAPI) {
 		});
 	}
 
-
 	var upaAlbum = function (album){
 		$http.post("http://localhost:8080/albuns", album).then(function(response){
-			carregarAlbuns();
+			carregaAlbuns();
+
 		}).catch(function (status){
 			console.log(status);
 		});
@@ -243,7 +237,6 @@ app.controller("sapCtrl", function($scope, $http, playlistAPI) {
 		});
 	}
 
-
-	carregarArtistas();
-	carregarAlbuns();
+	carregaArtistas();
+	carregaAlbuns();
 });

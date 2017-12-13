@@ -5,11 +5,11 @@ app.service("albumAPI", function(){
 	this.setAlbuns = function (albuns){
 		this.albuns = albuns;
 	}
-	
+
 	this.getAlbuns = function(){
 		return that.albuns;
 	}
-	
+
 	this.indexDoAlbum = function (artista, album) {
 		var index = -1
 		for (var i = 0; i < that.albuns.length; i++){
@@ -17,7 +17,6 @@ app.service("albumAPI", function(){
 				index = i;
 			}
 		}
-		
 		return index;
 
 	}

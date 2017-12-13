@@ -1,49 +1,27 @@
-app.controller("sapCtrl", function($scope, $http, playlistAPI, albumAPI) {
+app.controller("sapCtrl", function($scope, $uibModal, $http, playlistAPI, albumAPI, infoArtistaAPI) {
 	//se der certo retirar artistas e albuns
 	$scope.artistas=[];
 	$scope.albuns = albumAPI.getAlbuns();
 	//retirar a cima.
 	$scope.favoritos=[];
-	$scope.notas = [10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0];
+	
 	$scope.tituloFavoritos = "Mostrar Favoritos";
 
-	//INFOARTISTA
 	$scope.showInfoArtista = function(artista){	
-		if ($scope.infoArtista === undefined || $scope.infoArtista.nome == artista.nome || $scope.boolInfoArtista == false){
-			$scope.boolInfoArtista = !$scope.boolInfoArtista;
-		}
-
-		var albunsDoArtista = albumAPI.getAlbunsDoArtista(artista);
-		var musicasDoArtista = getMusicasDoArtista(albunsDoArtista);
-
-		$scope.infoArtista={nome: artista.nome, nota:artista.nota, ultimaMusica: artista.ultimaMusica, img: artista.img, albuns: albunsDoArtista, musicas: musicasDoArtista};
-	}
-
-	$scope.registraNotaEMusica = function (nota, musica){
-		if (nota){
-			getArtista().nota = nota;
-			$scope.infoArtista.nota = nota;
-			delete $scope.nota;
-		}
-
-		if (musica){
-			getArtista().ultimaMusica = getMusica(musica);
-			$scope.infoArtista.ultimaMusica= getArtista().ultimaMusica;
-			delete $scope.musica;
-		}
-		atualizaArtista(getArtista());	
+		var modalInstance = $uibModal.open({
+        templateUrl: 'templates/infoArtista.html',
+        controller: 'infoArtistaCtrl',
+        resolve: {
+          item: function () {
+            return artista;
+          }
+        }
+      });
 	}
 
 	//ARTISTAS e FAVORITOS
 	$scope.showArtistas = function(){
 		$scope.pesquisar = !$scope.pesquisar
-	}
-
-	var getArtista = function(){
-		arrNomeArtistas = $scope.artistas.map(function(e) { return angular.lowercase(e.nome); });
-		var index = arrNomeArtistas.indexOf(angular.lowercase($scope.infoArtista.nome));
-
-		return $scope.artistas[index];
 	}
 	
 	$scope.adicionarArtista = function(artista) {
@@ -58,11 +36,7 @@ app.controller("sapCtrl", function($scope, $http, playlistAPI, albumAPI) {
 
 	var existeArtista = function (artista) {
 		arrArtistaNome = $scope.artistas.map(function(e) { return angular.lowercase(e.nome); });
-		if (arrArtistaNome.indexOf(angular.lowercase(artista.nome)) != -1){
-			return true;
-		} else {
-			return false;
-		}
+		return arrArtistaNome.indexOf(angular.lowercase(artista.nome)) != -1;
 	}
 
 	$scope.filtraFavoritos = function(){
@@ -92,6 +66,7 @@ app.controller("sapCtrl", function($scope, $http, playlistAPI, albumAPI) {
 				removeFavoritos(artista);
 			}
 		}
+	
 		atualizaArtista(artista);
 	}
 
@@ -104,32 +79,6 @@ app.controller("sapCtrl", function($scope, $http, playlistAPI, albumAPI) {
 		var index = $scope.artistas.indexOf(artista);
 		$scope.artistas[index].favorito = false;
 	}
-
-	var getMusica = function(musica){
-		for (var indexAlbum = 0; indexAlbum < $scope.albuns.length; indexAlbum++){
-			if($scope.albuns[indexAlbum].nome == musica.album){
-
-				for (var indexMusica = 0; indexMusica < $scope.albuns[indexAlbum].musicas.length; indexMusica++){
-					if($scope.albuns[indexAlbum].musicas[indexMusica].nome == musica.nome){
-						return $scope.albuns[indexAlbum].musicas[indexMusica];
-					}
-				}
-			}
-		}
-	}
-
-
-	var getMusicasDoArtista = function (albunsDoArtista){
-		var musicasDoArtista=[];
-		for (var indexAlbum = 0; indexAlbum < albunsDoArtista.length; indexAlbum++){
-			for (var indexMusica = 0; indexMusica < albunsDoArtista[indexAlbum].musicas.length; indexMusica++){
-
-				musicasDoArtista.push({nome: albunsDoArtista[indexAlbum].musicas[indexMusica].nome, album: albunsDoArtista[indexAlbum].nome})
-			}
-		}
-		return musicasDoArtista;
-	}
-	
 
 	$scope.adicionarMusica = function(novaMusica, artistaDaMusica, album){
 		var adicionar = confirm("Você realmente quer adicionar esta música?");
@@ -149,8 +98,9 @@ app.controller("sapCtrl", function($scope, $http, playlistAPI, albumAPI) {
 					if ($scope.albuns[indexAlbum].id != undefined){
 						atualizaAlbum($scope.albuns[indexAlbum]);
 					}
+					
 					albumAPI.setAlbuns($scope.albuns);
-
+					
 					delete $scope.artistaDaMusica;
 					delete $scope.album;
 				}
@@ -199,6 +149,7 @@ app.controller("sapCtrl", function($scope, $http, playlistAPI, albumAPI) {
 	var upaArtista = function (artista){
 		$http.post("http://localhost:8080/artistas", artista).then(function(response){
 			$scope.artistas.push(response.data);
+			infoArtistaAPI.setArtistas($scope.artistas);
 		}).catch(function (status){
 			console.log(status);
 		});

@@ -1,2 +1,2 @@
-var app = angular.module("sap", ['ngRoute']);
+var app = angular.module("sap", ['ngRoute', 'ui.bootstrap']);
 

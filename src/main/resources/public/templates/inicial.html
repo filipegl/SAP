@@ -41,28 +41,5 @@
 
 			
 		</table>
-		<div ng-show="pesquisar && boolInfoArtista" id="infoArtista">
-				<h3 align="center">Informações sobre<br/> {{infoArtista.nome}}: <br/> </h3><img style="margin-left: 80px;"align="center" width="150px" border="1px" src="{{infoArtista.img}}" alt="Não contém imagem">
-				
-				<h5>Álbuns: </h5> 
-				<h6 ng-repeat="album in infoArtista.albuns">{{album.nome}};</h6>
-				<h5> Nota do artista: {{infoArtista.nota}}</h5>
-				<h5> Última música ouvida: {{infoArtista.ultimaMusica.nome}} </h5>
-
-				<!-- ver essa linha -->
-				<hr>
-
-				<form class="form-inline">						
-					<h5> Nota do artista: 
-					<select id="nota" ng-model="nota" ng-options="nota for nota in notas">
-					<option value="">--</option>
-					</select></h5>
-				
-					<select id="UltimaMusica" class="form-control" ng-model="musica" ng-options="musica.nome group by musica.album for musica in infoArtista.musicas">
-					<option value="">Selecione a ultima música ouvida</option>
-					</select>
-					<button id="registrar" ng-disabled="!musica && !nota" ng-click="registraNotaEMusica(nota, musica)">Registrar</button>
-				</form>
-			</div>
 	</div>
 </div>

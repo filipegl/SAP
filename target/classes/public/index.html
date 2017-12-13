@@ -1,19 +1,31 @@
 <!DOCTYPE html />
-<html ng-app="sap" xmlns:th="http://www.thymeleaf.org">
+<html ng-app="sap" ng-controller="sapCtrl" xmlns:th="http://www.thymeleaf.org">
 <head >
 	<meta charset="UTF-8" />
 	<title>Sistema de Áudio Personalizado</title>
+
+	<script src="static/lib/bootstrap/js/jquery-3.2.1.min.js"></script>
+
+	<link rel='stylesheet' href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
 	<link rel="stylesheet" type="text/css" href="static/lib/bootstrap/css/bootstrap.css">
 	<link rel="stylesheet" type="text/css" href="static/css/app.css">
+	<link rel="stylesheet" type="text/css" href="static/css/navbar.css">
+	
+	<script src="static/lib/bootstrap/js/jquery-3.2.1.min.js"></script>
+
 	<script src="static/lib/angular/angular.js"></script>
 	<script src="static/lib/angular/angular-route.js"></script>
 	<script src="static/lib/angular/ui-bootstrap-tpls-2.5.0.min.js"></script>
+	<script src="static/lib/bootstrap/js/bootstrap.js"></script>
+	<script src="static/lib/bootstrap/js/jquery-3.2.1.min.js"></script>
+	
 	
 	<script src="static/js/app.js"></script>
 	<script src="static/js/controller/sapCtrl.js"></script>
 	<script src="static/js/controller/playlistCtrl.js"></script>
 	<script src="static/js/controller/infoArtistaCtrl.js"></script>
 	<script src="static/js/controller/infoPlaylistCtrl.js"></script>
+	<script src="static/js/controller/cadastroUsuarioCtrl.js"></script>
 	<script src="static/js/services/playlistAPIService.js"></script>
 	<script src="static/js/services/albumAPIService.js"></script>
 	<script src="static/js/services/infoArtistaAPIService.js"></script>
@@ -27,10 +39,35 @@
 	<h1> Sistema de Áudio Personalizado </h1>
 	<nav class="navbar navbar-inverse">
 		<ul class="nav navbar-nav">
-			<li><a href="#/!">Página Inicial</a></li>
+			<li><a href="#">Página Inicial</a></li>
 			<li><a href="#!playlists">Playlist</a></li>
 		</ul>
-	</nav>
+		<ul class="nav navbar-nav navbar-right">
+		<li class="dropdown">
+		    <a class="dropdown-toggle" data-toggle="dropdown" href="#">Entrar <span class="caret"></span></a>
+			<ul id="login-dp" class="dropdown-menu">
+				<li>
+					 <div class="row">
+						<form class="form" role="form" method="post" action="login" accept-charset="UTF-8" id="login-nav">
+							<div class="form-group">
+								<input class="form-control" id="formLogin" type="text" ng-model="usuario.nome" placeholder="Usuário" style="font-style:italic">
+								<input type="password" id="formLogin" class="form-control" ng-model="usuario.senha" placeholder="Senha" style="font-style:italic" required>
+							</div>
+
+							<div class="form-group">
+								<button class="btn btn-primary" id="btnAutentica" ng-click="autenticaUsuario(usuario)" ng-disabled="!usuario.nome || !usuario.senha">Autenticar</button>
+							</div>
+						</form>
+					</div>
+					<div class="bottom text-center">
+						Novo por aqui? <a href="" ng-click="showCadastroUsuario()"><b>Cadastrar</b></a>
+					</div>
+				</li>
+			</ul>
+		</li>
+		</ul>
+	</nav> 
+	
 	<div ng-view >
 		
 	</div>

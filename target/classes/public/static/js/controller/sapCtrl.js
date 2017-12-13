@@ -18,6 +18,13 @@ app.controller("sapCtrl", function($scope, $uibModal, $http, playlistAPI, albumA
         }
       });
 	}
+	$scope.showCadastroUsuario = function(){
+		console.log("Entrou");
+		var modalInstance = $uibModal.open({
+		templateUrl: 'templates/cadastroUsuario.html',
+        controller: 'cadastroUsuarioCtrl',
+    	});
+	}
 
 	//ARTISTAS e FAVORITOS
 	$scope.showArtistas = function(){

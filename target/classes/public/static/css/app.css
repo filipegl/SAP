@@ -32,20 +32,9 @@ color:#000000
 	margin-bottom: 20px;
 }
 
-.navbar {
-	margin-top: 20px;
-	width: 220px;
-	margin-left: auto;
-	margin-right: auto;
-	background-color: transparent;
-	margin-bottom: -50px;
-}
 
-.nav a{
-    color: blue;
-    font-size: 1.2em;
-    text-shadow: 2px 1px #242424
- }
+
+
 
 .jumbotron {
 	width: 900px;
